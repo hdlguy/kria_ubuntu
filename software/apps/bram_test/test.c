@@ -28,7 +28,7 @@ int main(int argc,char** argv)
 
     uint32_t *regbuf = (uint32_t *)(pcie_addr+REGFILE_OFFSET);
 
-    fprintf(stdout,"FPGA ID=0x%08X, VERSION=0x%08X\n", regbuf[FPGA_ID], regbuf[FPGA_VERSION]);
+    fprintf(stdout,"FPGA_ID=0x%08X, VERSION=0x%08X\n", regbuf[FPGA_ID], regbuf[FPGA_VERSION]);
 
     //fprintf(stdout,"VERSION: 0x%08X\n",read_reg(pcie_addr,FPGA_VERSION));
 
