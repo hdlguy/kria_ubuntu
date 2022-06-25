@@ -1,0 +1,18 @@
+# The Vision kit hardwires the Mode lines to boot from QSPI.
+# Vitis wants the device to be in JTAG boot mode. Run this script.
+#
+#       xsdb jtag_setup
+#
+connect
+
+# Set target into JTAG mode
+puts "put system into JTAG modeand reset"
+targets -set -nocase -filter {name =~ "*PSU*"}
+stop
+after 1000
+mwr  0xff5e0200 0x0100
+rst -system
+after 1000
+
+exit
+
