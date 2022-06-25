@@ -1,75 +1,50 @@
-- Create the petalinux project. (Note: the BSP file name changes with version.)
-
     petalinux-create --force --type project --template zynqMP --source ~/Downloads/xilinx/petalinux/xilinx-k26-som-v2022.1-04191534.bsp --name proj1
-
-- Now configure the petalinux project with the settings we need to run Ubuntu from the SD card.
 
     cd proj1
 
     petalinux-config --get-hw-description=../../implement/results/
 
 
-- This will bring up a configuration menu.  Make the following changes.
-
-    * Under "Image Packaging Configuration" -> 
-        "Root filesystem type" -> 
-        Select "SD Card"
-    * Under "DTG Settings" -> 
-        "Kernel Bootargs" -> 
-        Un-select "generate boot args automatically" -> 
-        Enter "user set kernel bootargs" -> Paste in the following line
-            earlycon clk_ignore_unused earlyprintk root=/dev/mmcblk0p2 rw rootwait cma=1024M
-    * Save and exit the configuration menu. Wait for configuration to complete.
-
-- Now edit a file to patch a bug in the Petalinux BSP for the zcu104. (I don't know if this is still necessary.)
-
-    vim project-spec/meta-user/conf/petalinuxbsp.conf
-
-    * Add the followint line
-        IMAGE_INSTALL_remove = "gstreamer-vcu-examples"
-
-- Now build the bootloader
+        * Under "Image Packaging Configuration" -> 
+            "Root filesystem type" -> 
+            Select "SD Card"
+        * Under "DTG Settings" -> 
+            "Kernel Bootargs" -> 
+            Un-select "generate boot args automatically" -> 
+            Enter "user set kernel bootargs" -> Paste in the following line
+                earlycon clk_ignore_unused earlyprintk root=/dev/mmcblk0p2 rw rootwait cma=1024M
+        * Save and exit the configuration menu. Wait for configuration to complete.
 
     petalinux-build -c bootloader -x distclean
 
-- Now run another configu menu.
-
     petalinux-config --silentconfig -c kernel
     
-- Now build the linux kernel
-
     petalinux-build
-
-    It takes a while to run.
-
-- Now create the boot files that u-boot expects. 
 
     petalinux-package --force --boot --fsbl images/linux/zynqmp_fsbl.elf --u-boot images/linux/u-boot.elf
 
-    BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
-    image.ub contains the device tree and Linux kernel.
-
-- Now copy the boot files to the SD card.
+        BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
+        image.ub contains the device tree and Linux kernel.
 
     cp images/linux/BOOT.BIN /media/pdudley/BOOT/
     cp images/linux/image.ub /media/pdudley/BOOT/
 
-    It is assumed that you already partitioned the SD card. 
-    - sudo gparted  (make sure you have the correct drive selected!)
-    - First partition called BOOT, FAT32, 512MB
-    - Second partition called rootfs, ext4, use the rest of the card.
+        It is assumed that you already partitioned the SD card. 
+        - sudo gparted  (make sure you have the correct drive selected!)
+        - First partition called BOOT, FAT32, 512MB
+        - Second partition called rootfs, ext4, use the rest of the card.
 
-- Now down load the root filesystem. It is 360MB.
 
     wget https://releases.linaro.org/debian/images/developer-arm64/latest/linaro-stretch-developer-20180416-89.tar.gz
 
-- Uncompress the root filesystem preserving file attributes and ownership.
-
     sudo tar --preserve-permissions -zxvf linaro-stretch-developer-20180416-89.tar.gz
 
-- Copy the root filesystem onto the SD card preserving file attributes and ownership.
-
     sudo cp --recursive --preserve binary/* /media/pdudley/rootfs/ ; sync
+
+
+
+
+
 
 
 - Eject the SD card from your workstation and install it in the ZCU104.
