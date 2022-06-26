@@ -32,11 +32,12 @@
 
     petalinux-build -c bootloader -x distclean
 
-    petalinux-config --silentconfig -c kernel
+    petalinux-config -c kernel
+        CPU Power Management ---> CPU Idle ---> CPU Idle PM Support (uncheck)
 
     petalinux-build
 
-    petalinux-package --force --boot --fsbl images/linux/zynqmp_fsbl.elf --u-boot images/linux/u-boot.elf --fpga ../../../implement_p2/results/top.bit
+    petalinux-package --force --boot --fsbl images/linux/zynqmp_fsbl.elf --u-boot images/linux/u-boot.elf --fpga ../../implement/results/top.bit
 
 BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
 image.ub contains the device tree and Linux kernel.

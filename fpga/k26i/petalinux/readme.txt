@@ -26,8 +26,9 @@
         BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
         image.ub contains the device tree and Linux kernel.
 
-    cp images/linux/BOOT.BIN /media/pdudley/BOOT/
-    cp images/linux/image.ub /media/pdudley/BOOT/
+    cp images/linux/BOOT.BIN /media/pedro/BOOT/
+    cp images/linux/image.ub /media/pedro/BOOT/
+    cp images/linux/boot.scr /media/pedro/BOOT/
 
         It is assumed that you already partitioned the SD card. 
         - sudo gparted  (make sure you have the correct drive selected!)
