@@ -22,22 +22,23 @@
 
     petalinux-create --force --type project --template zynqMP --source ./uzed.bsp --name proj1
 
+    cp ./system-user.dtsi ./bspproj/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
+
     cd proj1
 
-    petalinux-config --silentconfig --get-hw-description=../../../implement_p2/results/
+    petalinux-config --silentconfig --get-hw-description=../../implement/results/
 
     petalinux-config
+
         Yocto Settings --> Add pre-mirror url  ---> change "http:// ..." to "https :// ..."
         Yocto Settings --> Network sstate feeds URL ---> change "http:// ..." to "https :// ..."
 
+    petalinux-build -c device-tree -x cleansstate
+    petalinux-build -c device-tree
     petalinux-build -c bootloader -x distclean
-
-    petalinux-config -c kernel
-        CPU Power Management ---> CPU Idle ---> CPU Idle PM Support (uncheck)
-
     petalinux-build
 
-    petalinux-package --force --boot --fsbl images/linux/zynqmp_fsbl.elf --u-boot images/linux/u-boot.elf --fpga ../../implement/results/top.bit
+    petalinux-package --force --boot --fsbl --u-boot --pmufw --fpga ../../implement/results/top.bit
 
 BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
 image.ub contains the device tree and Linux kernel.
