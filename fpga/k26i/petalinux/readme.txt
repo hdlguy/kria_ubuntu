@@ -2,7 +2,7 @@
 
     cd proj1
 
-    petalinux-config --get-hw-description=../../implement/results/
+    petalinux-config --get-hw-description ../../implement/results/
 
 
         * Under "Image Packaging Configuration" -> 
@@ -21,14 +21,14 @@
     
     petalinux-build
 
-    petalinux-package --force --boot --fsbl images/linux/zynqmp_fsbl.elf --u-boot images/linux/u-boot.elf
+    petalinux-package --force --boot --u-boot --kernel
 
         BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
         image.ub contains the device tree and Linux kernel.
 
-    cp images/linux/BOOT.BIN /media/pedro/BOOT/
-    cp images/linux/image.ub /media/pedro/BOOT/
-    cp images/linux/boot.scr /media/pedro/BOOT/
+    cp images/linux/BOOT.BIN /media/pdudley/BOOT/
+    cp images/linux/image.ub /media/pdudley/BOOT/
+    cp images/linux/boot.scr /media/pdudley/BOOT/
 
         It is assumed that you already partitioned the SD card. 
         - sudo gparted  (make sure you have the correct drive selected!)

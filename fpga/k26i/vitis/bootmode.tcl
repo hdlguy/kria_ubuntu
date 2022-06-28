@@ -1,6 +1,7 @@
 #
     #proc set_bootmode {bootmode} {
 
+        #set bootmode "jtag"
         set bootmode "sd"
         connect
         targets -set -filter {name =~ "PSU"}

@@ -5,7 +5,7 @@
     cp ./system-user.dtsi ./bspproj/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
 
     cd bspproj/
-    petalinux-config --get-hw-description=../../../implement_p2/results/
+    petalinux-config --get-hw-description ../../implement/results/
 
         * Under "Image Packaging Configuration" -> "Root filesystem type" -> Select "SD Card"
         * Under "Image Packaging Configuration" -> "Device Node of SD Device" -> Change to mmcblk1p2
@@ -38,7 +38,7 @@
     petalinux-build -c bootloader -x distclean
     petalinux-build
 
-    petalinux-package --force --boot --fsbl --u-boot --pmufw --fpga ../../implement/results/top.bit
+    petalinux-package --force --boot --u-boot --kernel --fpga ../../implement/results/top.bit
 
 BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
 image.ub contains the device tree and Linux kernel.
