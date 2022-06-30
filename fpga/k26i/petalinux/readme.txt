@@ -1,34 +1,29 @@
-    petalinux-create --force --type project --template zynqMP --source ~/Downloads/xilinx/petalinux/xilinx-k26-som-v2022.1-04191534.bsp --name proj1
+petalinux-create --force --type project --template zynqMP --source ~/Downloads/xilinx/petalinux/xilinx-k26-som-v2022.1-04191534.bsp --name proj1
 
-    cd proj1
+cd proj1
 
-    petalinux-config --get-hw-description ../../implement/results/
+petalinux-config --get-hw-description ../../implement/results/
 
 
-        * Under "Image Packaging Configuration" -> 
-            "Root filesystem type" -> 
-            Select "SD Card"
-        * Under "DTG Settings" -> 
-            "Kernel Bootargs" -> 
-            Un-select "generate boot args automatically" -> 
-            Enter "user set kernel bootargs" -> Paste in the following line
-                earlycon clk_ignore_unused earlyprintk root=/dev/mmcblk0p2 rw rootwait cma=1024M
-        * Save and exit the configuration menu. Wait for configuration to complete.
+    * Under "Image Packaging Configuration" -> "Root filesystem type" -> Select "SD Card"
+    * Under "DTG Settings" -> "Kernel Bootargs" -> Un-select "generate boot args automatically" -> Enter "user set kernel bootargs" -> Paste in the following line
+            earlycon clk_ignore_unused earlyprintk root=/dev/mmcblk0p2 rw rootwait cma=1024M
+    * Save and exit the configuration menu. Wait for configuration to complete.
 
-    petalinux-build -c bootloader -x distclean
+petalinux-build -c bootloader -x distclean
 
-    petalinux-config --silentconfig -c kernel
+petalinux-config --silentconfig -c kernel
     
-    petalinux-build
+petalinux-build
 
-    petalinux-package --force --boot --u-boot --kernel
+petalinux-package --force --boot --u-boot --kernel --offset 0xF40000 --fpga ../../implement/results/top.bit
 
-        BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
-        image.ub contains the device tree and Linux kernel.
+    BOOT.BIN contains the ATF, PMUFW, FSBL, U-Boot.
+    image.ub contains the device tree and Linux kernel.
 
-    cp images/linux/BOOT.BIN /media/pdudley/BOOT/
-    cp images/linux/image.ub /media/pdudley/BOOT/
-    cp images/linux/boot.scr /media/pdudley/BOOT/
+cp images/linux/BOOT.BIN /media/pedro/BOOT/
+cp images/linux/image.ub /media/pedro/BOOT/
+cp images/linux/boot.scr /media/pedro/BOOT/
 
         It is assumed that you already partitioned the SD card. 
         - sudo gparted  (make sure you have the correct drive selected!)
@@ -36,13 +31,11 @@
         - Second partition called rootfs, ext4, use the rest of the card.
 
 
-    wget https://releases.linaro.org/debian/images/developer-arm64/latest/linaro-stretch-developer-20180416-89.tar.gz
+wget https://releases.linaro.org/debian/images/developer-arm64/latest/linaro-stretch-developer-20180416-89.tar.gz
 
-    sudo tar --preserve-permissions -zxvf linaro-stretch-developer-20180416-89.tar.gz
+sudo tar --preserve-permissions -zxvf linaro-stretch-developer-20180416-89.tar.gz
 
-    sudo cp --recursive --preserve binary/* /media/pdudley/rootfs/ ; sync
-
-
+sudo cp --recursive --preserve binary/* /media/pedro/rootfs/ ; sync
 
 
 
