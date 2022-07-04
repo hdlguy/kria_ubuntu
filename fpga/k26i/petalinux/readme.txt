@@ -1,3 +1,4 @@
+
 petalinux-create --force --type project --template zynqMP --source ~/Downloads/xilinx/petalinux/xilinx-k26-som-v2022.1-04191534.bsp --name proj1
 
 cd proj1
