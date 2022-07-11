@@ -14,8 +14,13 @@ petalinux-config --get-hw-description ../../implement/results/
 
         # Save and exit the configuration menu. Wait for configuration to complete.
 
-petalinux-build --execute mrproper
+petalinux-build -c device-tree -x cleansstate
+petalinux-build -c device-tree
+petalinux-build -c bootloader -x distclean
 petalinux-build
+
+# petalinux-build --execute mrproper
+# petalinux-build
 
 petalinux-package --force --boot --u-boot --kernel --offset 0xF40000 --fpga ../../implement/results/top.bit
 
