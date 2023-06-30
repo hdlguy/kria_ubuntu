@@ -2,15 +2,15 @@
 
 petalinux-create --force --type project --template zynqMP --name proj1
 
-cp ./system-user.dtsi ./proj1/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
+cp system-user.dtsi proj1/project-spec/meta-user/recipes-bsp/device-tree/files/
 
 cd proj1/
-petalinux-config --get-hw-description ../../implement/results/
 
-        # Under "Image Packaging Configuration" -> "Root filesystem type" -> Select "SD Card"
+petalinux-config --get-hw-description ../../implement/results/
     
         # Yocto Settings --> Add pre-mirror url  ---> change "http:// ..." to "https :// ..."
         # Yocto Settings --> Network sstate feeds URL ---> change "http:// ..." to "https :// ..."
+        # Under "Image Packaging Configuration" -> "Root filesystem type" -> Select "SD Card"
 
         # Save and exit the configuration menu. Wait for configuration to complete.
 
