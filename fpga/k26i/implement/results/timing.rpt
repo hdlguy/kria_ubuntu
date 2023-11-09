@@ -1,14 +1,15 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
------------------------------------------------------------------------------------------
-| Tool Version      : Vivado v.2022.1 (lin64) Build 3526262 Mon Apr 18 15:47:01 MDT 2022
-| Date              : Tue Jul  5 13:58:27 2022
-| Host              : WD-SN850 running 64-bit Ubuntu 20.04.4 LTS
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
+| Date              : Thu Nov  9 16:21:43 2023
+| Host              : WD-SN850 running 64-bit Ubuntu 20.04.6 LTS
 | Command           : report_timing_summary -file ./results/timing.rpt
 | Design            : top
 | Device            : xck26-sfvc784
-| Speed File        : -2LV  PRODUCTION 1.29 08-03-2020
+| Speed File        : -2LV  PRODUCTION 1.30 05-15-2022
+| Design State      : Routed
 | Temperature Grade : C
------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
 Timing Summary Report
 
@@ -27,6 +28,7 @@ Timing Summary Report
   Timing Early Launch at Borrowing Latches   :  No
   Borrow Time for Max Delay Exceptions       :  Yes
   Merge Timing Exceptions                    :  Yes
+  Inter-SLR Compensation                     :  Conservative
 
   Corner  Analyze    Analyze    
   Name    Max Paths  Min Paths  
@@ -137,7 +139,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      4.873        0.000                      0                46834        0.009        0.000                      0                46834        3.500        0.000                       0                 17287  
+      4.551        0.000                      0                40719        0.010        0.000                      0                40719        3.500        0.000                       0                 14396  
 
 
 All user specified timing constraints are met.
@@ -161,7 +163,7 @@ clk_pl_1  {0.000 5.000}      10.000          100.000
 
 Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-clk_pl_0            4.873        0.000                      0                46834        0.009        0.000                      0                46834        3.500        0.000                       0                 17287  
+clk_pl_0            4.551        0.000                      0                40719        0.010        0.000                      0                40719        3.500        0.000                       0                 14396  
 
 
 ------------------------------------------------------------------------------------------------
@@ -192,34 +194,34 @@ Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing 
 From Clock:  clk_pl_0
   To Clock:  clk_pl_0
 
-Setup :            0  Failing Endpoints,  Worst Slack        4.873ns,  Total Violation        0.000ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.009ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        4.551ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.010ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        3.500ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             4.873ns  (required time - arrival time)
+Slack (MET) :             4.551ns  (required time - arrival time)
   Source:                 system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_0/CLK
                             (rising edge-triggered cell URAM288 clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[5].axi_rdata_int_reg[5]/D
+  Destination:            system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[2].axi_rdata_int_reg[2]/D
                             (rising edge-triggered cell FDRE clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             clk_pl_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (clk_pl_0 rise@10.000ns - clk_pl_0 rise@0.000ns)
-  Data Path Delay:        4.779ns  (logic 3.803ns (79.577%)  route 0.976ns (20.423%))
+  Data Path Delay:        5.263ns  (logic 3.907ns (74.235%)  route 1.356ns (25.765%))
   Logic Levels:           4  (LUT3=1 URAM288=3)
-  Clock Path Skew:        -0.264ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    2.593ns = ( 12.593 - 10.000 ) 
-    Source Clock Delay      (SCD):    3.072ns
-    Clock Pessimism Removal (CPR):    0.215ns
+  Clock Path Skew:        -0.099ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.817ns = ( 12.817 - 10.000 ) 
+    Source Clock Delay      (SCD):    3.143ns
+    Clock Pessimism Removal (CPR):    0.227ns
   Clock Uncertainty:      0.130ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Discrete Jitter          (DJ):    0.250ns
     Phase Error              (PE):    0.000ns
-  Clock Net Delay (Source):      2.805ns (routing 1.304ns, distribution 1.501ns)
-  Clock Net Delay (Destination): 2.377ns (routing 1.194ns, distribution 1.183ns)
+  Clock Net Delay (Source):      2.876ns (routing 1.584ns, distribution 1.292ns)
+  Clock Net Delay (Destination): 2.601ns (routing 1.450ns, distribution 1.151ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
@@ -229,25 +231,25 @@ Slack (MET) :             4.873ns  (required time - arrival time)
                          net (fo=1, routed)           0.229     0.229    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
     BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.038     0.267 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-    X1Y2 (CLOCK_ROOT)    net (fo=17287, routed)       2.805     3.072    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/clka
+    X1Y1 (CLOCK_ROOT)    net (fo=14396, routed)       2.876     3.143    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/clka
     URAM288_X0Y32        URAM288                                      r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_0/CLK
   -------------------------------------------------------------------    -------------------
-    URAM288_X0Y32        URAM288 (Prop_URAM_288K_INST_URAM288_CLK_CAS_OUT_DOUT_B[5])
-                                                      2.874     5.946 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_0/CAS_OUT_DOUT_B[5]
-                         net (fo=1, routed)           0.001     5.947    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_1_Cas_DoutB_1[5]
-    URAM288_X0Y33        URAM288 (Prop_URAM_288K_INST_URAM288_CAS_IN_DOUT_B[5]_CAS_OUT_DOUT_B[5])
-                                                      0.253     6.200 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_1/CAS_OUT_DOUT_B[5]
-                         net (fo=1, routed)           0.001     6.201    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_2_Cas_DoutB_2[5]
-    URAM288_X0Y34        URAM288 (Prop_URAM_288K_INST_URAM288_CAS_IN_DOUT_B[5]_CAS_OUT_DOUT_B[5])
-                                                      0.253     6.454 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_2/CAS_OUT_DOUT_B[5]
-                         net (fo=1, routed)           0.001     6.455    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_3_Cas_DoutB_3[5]
-    URAM288_X0Y35        URAM288 (Prop_URAM_288K_INST_URAM288_CAS_IN_DOUT_B[5]_DOUT_B[5])
-                                                      0.269     6.724 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_3/DOUT_B[5]
-                         net (fo=2, routed)           0.934     7.658    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/bram_rddata_a[5]
-    SLICE_X25Y130        LUT3 (Prop_C5LUT_SLICEM_I1_O)
-                                                      0.154     7.812 r  system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[5].axi_rdata_int[5]_i_1/O
-                         net (fo=1, routed)           0.039     7.851    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[5].axi_rdata_int[5]_i_1_n_0
-    SLICE_X25Y130        FDRE                                         r  system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[5].axi_rdata_int_reg[5]/D
+    URAM288_X0Y32        URAM288 (Prop_URAM_288K_INST_URAM288_CLK_CAS_OUT_DOUT_B[2])
+                                                      2.924     6.067 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_0/CAS_OUT_DOUT_B[2]
+                         net (fo=1, routed)           0.001     6.068    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_1_Cas_DoutB_1[2]
+    URAM288_X0Y33        URAM288 (Prop_URAM_288K_INST_URAM288_CAS_IN_DOUT_B[2]_CAS_OUT_DOUT_B[2])
+                                                      0.281     6.349 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_1/CAS_OUT_DOUT_B[2]
+                         net (fo=1, routed)           0.001     6.350    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_2_Cas_DoutB_2[2]
+    URAM288_X0Y34        URAM288 (Prop_URAM_288K_INST_URAM288_CAS_IN_DOUT_B[2]_CAS_OUT_DOUT_B[2])
+                                                      0.281     6.631 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_2/CAS_OUT_DOUT_B[2]
+                         net (fo=1, routed)           0.001     6.632    system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_3_Cas_DoutB_3[2]
+    URAM288_X0Y35        URAM288 (Prop_URAM_288K_INST_URAM288_CAS_IN_DOUT_B[2]_DOUT_B[2])
+                                                      0.269     6.901 r  system_i/blk_mem_gen_0/U0/inst_blk_mem_gen/gnuram_with_32bit_addr.uram_sp.xpm_memory_spram_inst/xpm_memory_base_inst/gen_wr_a.gen_byte_narrow.for_mem_cols[1].mem_reg_uram_3/DOUT_B[2]
+                         net (fo=2, routed)           1.272     8.173    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/bram_rddata_a[2]
+    SLICE_X21Y131        LUT3 (Prop_B6LUT_SLICEM_I1_O)
+                                                      0.152     8.325 r  system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[2].axi_rdata_int[2]_i_1/O
+                         net (fo=1, routed)           0.081     8.406    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[2].axi_rdata_int[2]_i_1_n_0
+    SLICE_X21Y131        FDRE                                         r  system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[2].axi_rdata_int_reg[2]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pl_0 rise edge)
@@ -256,17 +258,17 @@ Slack (MET) :             4.873ns  (required time - arrival time)
                          net (fo=1, routed)           0.181    10.181    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
     BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.035    10.216 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-    X1Y2 (CLOCK_ROOT)    net (fo=17287, routed)       2.377    12.593    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/s_axi_aclk
-    SLICE_X25Y130        FDRE                                         r  system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[5].axi_rdata_int_reg[5]/C
-                         clock pessimism              0.215    12.808    
-                         clock uncertainty           -0.130    12.679    
-    SLICE_X25Y130        FDRE (Setup_CFF2_SLICEM_C_D)
-                                                      0.045    12.724    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[5].axi_rdata_int_reg[5]
+    X1Y1 (CLOCK_ROOT)    net (fo=14396, routed)       2.601    12.817    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/s_axi_aclk
+    SLICE_X21Y131        FDRE                                         r  system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[2].axi_rdata_int_reg[2]/C
+                         clock pessimism              0.227    13.044    
+                         clock uncertainty           -0.130    12.914    
+    SLICE_X21Y131        FDRE (Setup_BFF_SLICEM_C_D)
+                                                      0.043    12.957    system_i/axi_bram_ctrl_0/U0/gext_inst.abcv4_0_ext_inst/GEN_AXI4.I_FULL_AXI/I_RD_CHNL/GEN_NO_RD_CMD_OPT.GEN_RDATA_NO_ECC.GEN_RDATA_NO_RL_NO_ECC.GEN_RDATA[2].axi_rdata_int_reg[2]
   -------------------------------------------------------------------
-                         required time                         12.724    
-                         arrival time                          -7.851    
+                         required time                         12.957    
+                         arrival time                          -8.406    
   -------------------------------------------------------------------
-                         slack                                  4.873    
+                         slack                                  4.551    
 
 
 
@@ -274,22 +276,22 @@ Slack (MET) :             4.873ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.009ns  (arrival time - required time)
-  Source:                 system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_payld_fifo/mesg_reg_reg[118]/C
+Slack (MET) :             0.010ns  (arrival time - required time)
+  Source:                 system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_payld_fifo/mesg_reg_reg[44]/C
                             (rising edge-triggered cell FDRE clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_shelf_reg[1][118]/D
+  Destination:            system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_shelf_reg[0][44]/D
                             (rising edge-triggered cell FDRE clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             clk_pl_0
   Path Type:              Hold (Min at Slow Process Corner)
   Requirement:            0.000ns  (clk_pl_0 rise@0.000ns - clk_pl_0 rise@0.000ns)
-  Data Path Delay:        0.246ns  (logic 0.113ns (46.009%)  route 0.133ns (53.991%))
+  Data Path Delay:        0.236ns  (logic 0.113ns (47.881%)  route 0.123ns (52.119%))
   Logic Levels:           0  
-  Clock Path Skew:        0.133ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    3.121ns
-    Source Clock Delay      (SCD):    2.771ns
-    Clock Pessimism Removal (CPR):    0.216ns
-  Clock Net Delay (Source):      2.555ns (routing 1.194ns, distribution 1.361ns)
-  Clock Net Delay (Destination): 2.854ns (routing 1.304ns, distribution 1.550ns)
+  Clock Path Skew:        0.124ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    3.110ns
+    Source Clock Delay      (SCD):    2.764ns
+    Clock Pessimism Removal (CPR):    0.221ns
+  Clock Net Delay (Source):      2.548ns (routing 1.450ns, distribution 1.098ns)
+  Clock Net Delay (Destination): 2.843ns (routing 1.584ns, distribution 1.259ns)
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
@@ -299,13 +301,13 @@ Slack (MET) :             0.009ns  (arrival time - required time)
                          net (fo=1, routed)           0.181     0.181    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
     BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.035     0.216 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-    X1Y2 (CLOCK_ROOT)    net (fo=17287, routed)       2.555     2.771    system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_payld_fifo/aclk
-    SLICE_X7Y155         FDRE                                         r  system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_payld_fifo/mesg_reg_reg[118]/C
+    X1Y1 (CLOCK_ROOT)    net (fo=14396, routed)       2.548     2.764    system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_payld_fifo/aclk
+    SLICE_X12Y92         FDRE                                         r  system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_payld_fifo/mesg_reg_reg[44]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X7Y155         FDRE (Prop_CFF2_SLICEM_C_Q)
-                                                      0.113     2.884 r  system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_payld_fifo/mesg_reg_reg[118]/Q
-                         net (fo=2, routed)           0.133     3.017    system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/r_payld_i[1]_5[118]
-    SLICE_X6Y156         FDRE                                         r  system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_shelf_reg[1][118]/D
+    SLICE_X12Y92         FDRE (Prop_HFF2_SLICEM_C_Q)
+                                                      0.113     2.877 r  system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_payld_fifo/mesg_reg_reg[44]/Q
+                         net (fo=2, routed)           0.123     3.000    system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/r_payld_i[0]_3[44]
+    SLICE_X13Y92         FDRE                                         r  system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_shelf_reg[0][44]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pl_0 rise edge)
@@ -314,16 +316,16 @@ Slack (MET) :             0.009ns  (arrival time - required time)
                          net (fo=1, routed)           0.229     0.229    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
     BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
                                                       0.038     0.267 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
-    X1Y2 (CLOCK_ROOT)    net (fo=17287, routed)       2.854     3.121    system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/aclk
-    SLICE_X6Y156         FDRE                                         r  system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_shelf_reg[1][118]/C
-                         clock pessimism             -0.216     2.905    
-    SLICE_X6Y156         FDRE (Hold_HFF2_SLICEL_C_D)
-                                                      0.103     3.008    system_i/smartconnect_0/inst/s01_entry_pipeline/s01_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[1].r_shelf_reg[1][118]
+    X1Y1 (CLOCK_ROOT)    net (fo=14396, routed)       2.843     3.110    system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/aclk
+    SLICE_X13Y92         FDRE                                         r  system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_shelf_reg[0][44]/C
+                         clock pessimism             -0.221     2.888    
+    SLICE_X13Y92         FDRE (Hold_EFF2_SLICEM_C_D)
+                                                      0.102     2.990    system_i/smartconnect_0/inst/s00_entry_pipeline/s00_si_converter/inst/converter.wrap_narrow_inst/gen_thread_loop[0].r_shelf_reg[0][44]
   -------------------------------------------------------------------
-                         required time                         -3.008    
-                         arrival time                           3.017    
+                         required time                         -2.990    
+                         arrival time                           3.000    
   -------------------------------------------------------------------
-                         slack                                  0.009    
+                         slack                                  0.010    
 
 
 
