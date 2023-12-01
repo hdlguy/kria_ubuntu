@@ -10,7 +10,6 @@ cd proj1
 
 petalinux-config --get-hw-description=../../../fpga/kv26/implement/results/
 
-
     * Yocto Settings -> Add pre-mirror url -> change http: to https:
     * Yocto Settings -> Network State Feeds url -> change http: to https:
     * Image Settings -> EXT4 (if you want the rootfs on the sd card)
@@ -22,21 +21,11 @@ petalinux-build -c bootloader -x distclean
 
 petalinux-config -c kernel --silentconfig
 
-Do this instead to use the pcie for an nvme drive
-
-petalinux-config -c kernel
-
-    * Drivers -> nvme -> nvme as block device.
-    * Device Drivers -> Phy Subsystem -> PHY Core.
-    * Device Drivers -> Phy Subsystem -> Xilinx ZynqMP PHY driver.
-    * save and exit
-
-
 petalinux-build
 
-- If petalinux-build throws an error just rerun the above three commands. That usually fixes things.
+    - If petalinux-build throws an error just rerun the above three commands. That usually fixes things.
 
-petalinux-package --force --boot --u-boot --kernel --offset 0xF40000 --fpga ../../implement/results/top.bit
+petalinux-package --force --boot --u-boot --kernel --offset 0xF40000 --fpga ../../../fpga/kv26/implement/results/top.bit 
 
 
 cp images/linux/BOOT.BIN /media/pedro/BOOT/
@@ -46,17 +35,8 @@ cp images/linux/boot.scr /media/pedro/BOOT/
 cd ..
 
 
-## Installing a Linaro root filesystem from downloaded filesystem image. (not recommended)
-This does not work very well.  It is much better to use the debootstrap flow below.
-
-wget https://releases.linaro.org/debian/images/developer-arm64/latest/linaro-stretch-developer-20180416-89.tar.gz
-
-sudo tar --preserve-permissions -zxvf linaro-stretch-developer-20180416-89.tar.gz
-
-sudo cp --recursive --preserve binary/* /media/pedro/rootfs/; sync
-
-
 ## Installing a Debian root filesystem using debootstrap
+
 Then follow instructions here to confgure the root file system: https://akhileshmoghe.github.io/_post/linux/debian_minimal_rootfs
 
 Here are the most important commands listed for convenience. 
