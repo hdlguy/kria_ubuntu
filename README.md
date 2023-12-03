@@ -9,3 +9,11 @@ This is a project to demonstrate Xilinx Kria running Ubuntu.  The Xilinx Multi-P
 ## Stretch Goals
 - **Boot Petalinux directly from the SD card using a debootstrap filesystem.
 
+## Files
+    - source - fpga source
+    - implement  - fpga compilation project
+    - petalinux  - petalinux build instructions
+    - ubuntu - instructions to run Ubuntu via the Xilinx wic flow
+    - vitis - Vitis bare metal C projects
+    - apps  - C applications that can be run under linux on the Kria
+
