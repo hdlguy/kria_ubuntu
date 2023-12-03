@@ -95,8 +95,6 @@ rst -system
 con                                                                                         
 
 
-############### Post Boot Stuff ##############################3
-
 ## Run-time FPGA Configuration
 
 - Configure the PL side of the Zynq with an FPGA design. This has changed with this newer Linux on Zynq+.
