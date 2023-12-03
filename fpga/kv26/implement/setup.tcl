@@ -19,12 +19,10 @@ upgrade_ip -quiet  [get_ips *]
 generate_target {all} [get_ips *]
 
 # make the Zynq block diagram
-source ../source/system.tcl
-generate_target {synthesis implementation} [get_files ./proj.srcs/sources_1/bd/system/system.bd]
-set_property synth_checkpoint_mode None    [get_files ./proj.srcs/sources_1/bd/system/system.bd]
-#write_hwdef -force -verbose ./results/system.hdf
+#source ../source/system.tcl
+#generate_target {synthesis implementation} [get_files ./proj.srcs/sources_1/bd/system/system.bd]
+#set_property synth_checkpoint_mode None    [get_files ./proj.srcs/sources_1/bd/system/system.bd]
 
-# Read in the hdl source.
 read_verilog -sv ../source/axi_regfile/axi_regfile_v1_0_S00_AXI.sv
 read_verilog -sv ../source/top.sv
 
