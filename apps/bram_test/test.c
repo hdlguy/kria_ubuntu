@@ -8,7 +8,7 @@
 
 #include "mem-io.h"
 #include "utils.h"
-#include "proto2_hw.h"
+#include "fpga.h"
 
 
 int main(int argc,char** argv)
