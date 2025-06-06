@@ -2,11 +2,11 @@ ALL_EXE = test
 all: $(ALL_EXE) 
 
 CC=gcc
-CFLAGS=-I. -I../include  -I../API -I.. -Wall
+CFLAGS=-I. -I.. -Wall
 
 DEPS = Makefile ../fpga.h
 
-PUBLIC_LIBS = ../API/mem-io.o
+PUBLIC_LIBS = 
 LIB_FILES =
 
 LIB_OBJS := $(subst .c,.o,$(LIB_FILES))

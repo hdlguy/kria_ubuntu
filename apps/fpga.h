@@ -1,7 +1,7 @@
-#define     BASE_ADDRESS        0xa0000000
-#define     PROTO_SIZE          0x02000000
+#define     FPGA_BASE_ADDRESS   0xa0000000
+#define     FPGA_SIZE           0x02000000
 
-#define     REGFILE_OFFSET      0x00000000
+#define     FPGA_REG_OFFSET     0x00000000
 
 #define     FPGA_ID             0       // Currently returns 0xDEADBEEF
 #define     FPGA_VERSION        1       // Returns major and minor version numbers.
