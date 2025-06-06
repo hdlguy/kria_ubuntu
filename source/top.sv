@@ -1,5 +1,7 @@
 
-module top ();
+module top (
+    output  logic       fan_pwm
+);
 
   logic [31:0]M00_araddr;
   logic [2:0]M00_arprot;
@@ -88,6 +90,14 @@ module top ();
         .S_AXI_WREADY  (M00_AXI_wready ),
         .S_AXI_WSTRB   (M00_AXI_wstrb  ),
         .S_AXI_WVALID  (M00_AXI_wvalid )
-    );    
+    );
+    
+    logic[31:0] axi_count = -1;
+    logic fan_pwm_pre = 0;
+    always_ff @(posedge axi_aclk) begin
+        axi_count <= axi_count - 1;
+        fan_pwm_pre <= (axi_count[12]) & (axi_count[11]); // 25% duty factor at 12KHz
+        fan_pwm <= fan_pwm_pre;
+    end    
     
 endmodule
