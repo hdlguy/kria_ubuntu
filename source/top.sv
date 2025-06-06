@@ -96,7 +96,7 @@ module top (
     logic fan_pwm_pre = 0;
     always_ff @(posedge axi_aclk) begin
         axi_count <= axi_count - 1;
-        fan_pwm_pre <= (axi_count[12]) & (axi_count[11]); // 25% duty factor at 12KHz
+        fan_pwm_pre <= (axi_count[12]) & (axi_count[11]) & (axi_count[10]); // 1/8 duty factor at 12KHz
         fan_pwm <= fan_pwm_pre;
     end    
     
