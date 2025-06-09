@@ -100,4 +100,7 @@ module top (
         fan_pwm <= fan_pwm_pre;
     end    
     
+    // debug
+    top_ila ila_inst (.clk(axi_aclk), .probe0({axi_count[15:0], fan_pwm_pre})); // 17
+    
 endmodule

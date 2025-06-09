@@ -35,6 +35,10 @@ petalinux-config -c kernel
     * Device Drivers -> nvme -> nvme as block device.
     * save and exit
 
+    * Or if no nvme drive
+
+petalinux-config -c kernel --silentconfig
+
 ### Build
 
 petalinux-build
