@@ -12,6 +12,10 @@
 
 petalinux-create project --template zynqMP --name proj1
 
+    * Or
+
+petalinux-create project -s ~/Downloads/xilinx/kria/xilinx-kv260-starterkit-v2025.1-05221048.bsp
+
 ### configure project from hardware
 
 cd proj1
@@ -24,26 +28,17 @@ petalinux-config --get-hw-description=../sdt/
     * DTG Settings -> Kernel Bootargs -> manual bootargs -> earlycon console=ttyPS0,115200 root=/dev/mmcblk1p2 rw rootwait clk_ignore_unused (mmc 1, rw, clk_ignore_unused)
     * save and exit
 
-### Build the bootloader
+### Build the bootloader (I don't know if this step is really needed.)
 
 petalinux-build -c bootloader -x distclean
 
 ### Configure the kernel
-
-petalinux-config -c kernel
-
-    * Device Drivers -> nvme -> nvme as block device.
-    * save and exit
-
-    * Or if no nvme drive
 
 petalinux-config -c kernel --silentconfig
 
 ### Build
 
 petalinux-build
-
-    * NOTE: frequently petalinux-build generates error messages. Just rerun the previous three commands to resolve that. (Who knows why?)
 
 ### Package 
 

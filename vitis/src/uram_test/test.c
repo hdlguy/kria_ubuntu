@@ -1,41 +1,52 @@
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "platform.h"
 #include "xil_printf.h"
 #include "xparameters.h"
-
-#define ULTRARAM_SIZE 	(XPAR_BRAM_0_HIGHADDR - XPAR_BRAM_0_BASEADDR + 1)
-#define TESTBLOCK_SIZE 	(ULTRARAM_SIZE/32)
-
-uint32_t write_data[TESTBLOCK_SIZE];
+//#include "fpga.h"
 
 int main()
 {
-    init_platform();
 
-    uint32_t *bram_ptr, *ultraram_ptr;
-    ultraram_ptr = (uint32_t *) XPAR_BRAM_0_BASEADDR;
+    //uint32_t* regptr = (uint32_t *) XPAR_REGFILE_CTRL_BASEADDR;
 
-    int errors;
+    uint32_t* ramptr = (uint32_t *) XPAR_AXI_BRAM_CTRL_0_BASEADDR;
+    uint32_t ramsize = (uint32_t)XPAR_AXI_BRAM_CTRL_0_HIGHADDR - (uint32_t)XPAR_AXI_BRAM_CTRL_0_BASEADDR + 1;
+    xil_printf("ramsize = 0x%08x\n\r", ramsize);
+    xil_printf("XPAR_AXI_BRAM_CTRL_0_BASEADDR = 0x%08x\n\r", XPAR_AXI_BRAM_CTRL_0_BASEADDR);
+    xil_printf("XPAR_AXI_BRAM_CTRL_0_HIGHADDR = 0x%08x\n\r", XPAR_AXI_BRAM_CTRL_0_HIGHADDR);
     
-    xil_printf("ULTRARAM_SIZE = 0x%08x, ultraram_ptr = %p\n\r", ULTRARAM_SIZE, ultraram_ptr);
 
-    xil_printf("Hello1\n\r");
-    for(int j=0; 1; j++) {
+    xil_printf("Hello World\n\r");
+    uint32_t whilecount=0;
+    while(1) {
 
-    	for(int i=0; i<100000000; i++);
-    	printf("j = 0x%08x = %d\n", j, j);
+        //xil_printf("%06u: FPGA_VERSION = 0x%08x, FPGA_ID = 0x%08x\n\r", whilecount, regptr[FPGA_VERSION], regptr[FPGA_ID]);
+        //regptr[FPGA_LED_CONTROL] = whilecount;
 
-        bram_ptr = ultraram_ptr;
-        xil_printf("testing memory at %p\n\r", bram_ptr);
-        for (int i=0; i<TESTBLOCK_SIZE; i++) bram_ptr[i] = write_data[i] = rand(); // create and write test data.
-        errors = 0;
-        for (int i=0; i<TESTBLOCK_SIZE; i++) if (bram_ptr[i] != write_data[i]) errors++; // check results
-        xil_printf("errors = %d\n\r", errors);
+        // fill ram with random numbers
+        srand(whilecount);
+        for (uint32_t i=0; i<ramsize/4; i++){
+            ramptr[i] = rand();
+        }
 
+        // check ram contents
+        int errors = 0;
+        srand(whilecount);
+        for (uint32_t i=0; i<ramsize/4; i++){
+            uint32_t rval = rand();
+            if (rval != ramptr[i]) {
+                errors++;
+            }
+        }
+        xil_printf("ram errors = %d\n\r", errors);
+
+        // delay
+        for(int i=0; i<2000000; i++);
+        whilecount++;
     }
 
-    cleanup_platform();
-
-    return 0;
+    return(0);
+    
 }
+
