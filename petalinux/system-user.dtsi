@@ -1,4 +1,3 @@
-/* /include/ "system-conf.dtsi" */
 / {
 };
 
@@ -6,6 +5,11 @@
 &sdhci1 {
 	disable-wp;
 	no-1-8-v;
+};
+
+&gem3 {
+    status = "okay";
+    local-mac-address = [00 0a 35 00 02 90];
 };
 
 

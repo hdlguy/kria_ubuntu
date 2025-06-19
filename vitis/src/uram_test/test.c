@@ -10,11 +10,13 @@ int main()
 
     //uint32_t* regptr = (uint32_t *) XPAR_REGFILE_CTRL_BASEADDR;
 
-    uint32_t* ramptr = (uint32_t *) XPAR_AXI_BRAM_CTRL_0_BASEADDR;
-    uint32_t ramsize = (uint32_t)XPAR_AXI_BRAM_CTRL_0_HIGHADDR - (uint32_t)XPAR_AXI_BRAM_CTRL_0_BASEADDR + 1;
-    xil_printf("ramsize = 0x%08x\n\r", ramsize);
-    xil_printf("XPAR_AXI_BRAM_CTRL_0_BASEADDR = 0x%08x\n\r", XPAR_AXI_BRAM_CTRL_0_BASEADDR);
-    xil_printf("XPAR_AXI_BRAM_CTRL_0_HIGHADDR = 0x%08x\n\r", XPAR_AXI_BRAM_CTRL_0_HIGHADDR);
+//    uint32_t* ramptr = (uint32_t *) XPAR_AXI_BRAM_CTRL_0_BASEADDR;
+//    uint32_t ramsize = (uint32_t)XPAR_AXI_BRAM_CTRL_0_HIGHADDR - (uint32_t)XPAR_AXI_BRAM_CTRL_0_BASEADDR + 1;
+
+    uint32_t* ramptr = (uint32_t *) XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR;
+    uint32_t ramsize = (uint32_t)XPAR_AXI_BRAM_CTRL_0_S_AXI_HIGHADDR - (uint32_t)XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 1;
+
+    xil_printf("ramsize = 0x%08x, ramptr = %p\n\r", ramsize, ramptr);
     
 
     xil_printf("Hello World\n\r");
