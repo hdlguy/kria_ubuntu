@@ -1,7 +1,7 @@
 
 # Petalinux (2025.1) on ZynqMP
 
-# Download and uncompress sstate artifacts
+## Download and uncompress sstate artifacts
 I find that the compile time download from petalinux.xilinx.com is just unreliable. The trick is to have those files local. Then, in petalinux-config we point to the local files.
 
 https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html
@@ -9,7 +9,7 @@ https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav
     * sstate_aarch64 (TAR/GZIP - 33.95 GB) 
 
 ## Convert XSA to SDT
-/tools/Xilinx/2025.1/Vitis/bin/sdtgen -eval "set_dt_param -dir ./sdt -xsa ../implement/results/top.xsa -user_dts ./system-user.dtsi; generate_sdt;"
+rm -rf ./sdt/; /tools/Xilinx/2025.1/Vitis/bin/sdtgen -eval "set_dt_param -dir ./sdt -xsa ../implement/results/top.xsa -user_dts ./system-user.dtsi; generate_sdt;"
 
 ### Create Petalinux project
 petalinux-create project --template zynqMP --name proj1
@@ -51,7 +51,13 @@ petalinux-package --force --boot --fsbl --pmufw --u-boot --fpga
 petalinux-package --force --boot --fsbl --pmufw --u-boot --fpga ../../implement/results/top.bit
 
 ### Copy to SD Card
-cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
+rm /media/pedro/BOOT/*; cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
+
+### Trick Kria u-boot to reboot from SD card
+setenv oldbootcmd 'setenv model $board_name; setexpr model gsub ".*${k24_starter}.*" starter; setexpr model gsub ".*${k26_starter}.*" starter; if test ${model} = "starter"; then run som_cc_boot; else run som_bootmenu; fi # Boot menu'
+setenv sdbootcmd 'mw.l 00ff5e0200 0000e100 1; mw.l 00ff5e0218 00000010 1'
+setenv bootcmd 'run sdbootcmd'
+boot
 
 
 
