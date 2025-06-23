@@ -10,5 +10,5 @@
 #define     ULTRARAM_SIZE       0x00010000 // 64KB
 
 #define     TEST_BRAM_OFFSET    0x00020000
-#define     TEST_BRAM_SIZE      0x00002000 // 8KB
+#define     TEST_BRAM_SIZE      0x00004000 // 16KB
 
