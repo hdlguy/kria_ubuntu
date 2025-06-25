@@ -50,6 +50,10 @@ petalinux-package --force --boot --fsbl --pmufw --u-boot --fpga
 
 petalinux-package --force --boot --fsbl --pmufw --u-boot --fpga ../../implement/results/top.bit
 
+    * This for u-boot only
+
+petalinux-package boot --force --fsbl --pmufw --u-boot --fpga
+
 ### Copy to SD Card
 rm /media/pedro/BOOT/*; cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
 

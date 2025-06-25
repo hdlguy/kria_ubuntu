@@ -23,10 +23,11 @@ platform generate
 
 
 app create -name uram_test -platform standalone_plat -domain standalone_domain -template "Empty Application(C)"
-file link -symbolic ./workspace/uram_test/src/test.c                ../../../src/uram_test/test.c
-file link -symbolic ./workspace/uram_test/src/platform.c            ../../../src/uram_test/platform.c
-file link -symbolic ./workspace/uram_test/src/platform.h            ../../../src/uram_test/platform.h
-file link -symbolic ./workspace/uram_test/src/platform_config.h     ../../../src/uram_test/platform_config.h
+file link -symbolic ./workspace/uram_test/src/test.c    ../../../src/uram_test/test.c
+file link -symbolic ./workspace/uram_test/src/fpga.h    ../../../src/fpga.h
+#file link -symbolic ./workspace/uram_test/src/platform.c            ../../../src/uram_test/platform.c
+#file link -symbolic ./workspace/uram_test/src/platform.h            ../../../src/uram_test/platform.h
+#file link -symbolic ./workspace/uram_test/src/platform_config.h     ../../../src/uram_test/platform_config.h
 
 #app create -name ts_test -platform standalone_plat -domain standalone_domain -template "Empty Application(C)"
 #file link -symbolic ./workspace/ts_test/src/test.c ../../../src/ts_test/test.c
