@@ -15,6 +15,8 @@ rm -rf ./sdt/; /tools/Xilinx/2025.1/Vitis/bin/sdtgen -eval "set_dt_param -dir ./
 petalinux-create project --template zynqMP --name proj1
 cd proj1
 
+
+
 ### configure project from hardware
 petalinux-config --get-hw-description=../sdt/
 
@@ -82,15 +84,18 @@ boot
 ### Create Petalinux project
 
 petalinux-create project --template zynqMP --name proj1
+cd proj1
 
     * Or
 
 petalinux-create project -s ~/Downloads/xilinx/kria/xilinx-kv260-starterkit-v2025.1-05221048.bsp
-
-### configure project from hardware
-
 cd proj1
 
+### add somethinf for VCU
+vi project-spec/meta-user/conf/petalinuxbsp.conf
+MACHINE_FEATURES:append = " vcu"
+
+### configure project from hardware
 petalinux-config --get-hw-description=../sdt/
 
     * Image Packaging Configuration -> Root Filesystem Type -> EXT4                         (if you want a persistent rootfs)
@@ -105,7 +110,10 @@ petalinux-build -c bootloader -x distclean
 
 ### Configure the kernel
 
-petalinux-config -c kernel --silentconfig
+petalinux-config -c kernel
+
+    * Device Drivers -> nvme -> nvme as block device.
+    * save and exit
 
 ### Build
 
