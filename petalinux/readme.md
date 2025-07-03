@@ -1,5 +1,6 @@
 
-# Petalinux (2025.1) on ZynqMP
+# Petalinux (2025.1) on Kria K26
+In order to boot directly from the SD card R162 and R163 were removed from the carrier card.
 
 ## Download and uncompress sstate artifacts
 I find that the compile time download from petalinux.xilinx.com is just unreliable. The trick is to have those files local. Then, in petalinux-config we point to the local files.
@@ -34,18 +35,13 @@ petalinux-config --get-hw-description=../sdt/
 petalinux-build -c bootloader -x distclean
 
 ### Configure the kernel
-petalinux-config -c kernel
-
-    * Device Drivers -> nvme -> nvme as block device.
-    * save and exit
-
-Or if no nvme
 petalinux-config -c kernel --silentconfig
 
 ### Build
 petalinux-build
 
 ### Package 
+petalinux-package boot --force --u-boot --kernel --fpga
 petalinux-package --force --boot --fsbl --pmufw --u-boot --fpga 
 
     * Use this to just update the bitfile.
