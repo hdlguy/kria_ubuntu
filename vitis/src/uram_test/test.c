@@ -8,7 +8,7 @@
 int main()
 {
 
-    uint32_t* regptr = (uint32_t *) XPAR_M00_BASEADDR + REG_OFFSET;   
+    uint32_t* regptr = (uint32_t *) XPAR_REGFILE_CTL_BASEADDR;   
     uint32_t* ramptr = (uint32_t *) XPAR_AXI_BRAM_CTRL_0_BASEADDR;
     uint32_t ramsize = (uint32_t)XPAR_AXI_BRAM_CTRL_0_HIGHADDR - (uint32_t)XPAR_AXI_BRAM_CTRL_0_BASEADDR + 1;
 
@@ -19,7 +19,10 @@ int main()
     uint32_t whilecount=0;
     while(1) {
 
-        //xil_printf("%06u: FPGA_VERSION = 0x%08x, FPGA_ID = 0x%08x\n\r", whilecount, regptr[FPGA_VERSION], regptr[FPGA_ID]);
+        uint32_t version = ramptr[FPGA_VERSION];
+        uint32_t id      = ramptr[FPGA_ID];
+        xil_printf("%06u: FPGA_VERSION = 0x%08x, FPGA_ID = 0x%08x\n\r", whilecount, version, id);
+
 
         // fill ram with random numbers
         srand(whilecount);

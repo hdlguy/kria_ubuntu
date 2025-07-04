@@ -1,52 +1,32 @@
 
 module top (
-    output  logic       fan_pwm
+    output  logic       fan_pwm,
+    output  logic[8:1]  pmod
 );
 
-  logic [31:0]M00_araddr;
-  logic [2:0]M00_arprot;
-  logic M00_arready;
-  logic M00_arvalid;
-  logic [31:0]M00_awaddr;
-  logic [2:0]M00_awprot;
-  logic M00_awready;
-  logic M00_awvalid;
-  logic M00_bready;
-  logic [1:0]M00_bresp;
-  logic M00_bvalid;
-  logic [31:0]M00_rdata;
-  logic M00_rready;
-  logic [1:0]M00_rresp;
-  logic M00_rvalid;
-  logic [31:0]M00_wdata;
-  logic M00_wready;
-  logic [3:0]M00_wstrb;
-  logic M00_wvalid;  
   logic axi_aclk;
   logic axi_aresetn;
+  
+  logic [11:0]  regfile_addr;
+  logic         regfile_clk;
+  logic [31:0]  regfile_din;
+  logic [31:0]  regfile_dout;
+  logic         regfile_en;
+  logic         regfile_rst;
+  logic [3:0]   regfile_we;
 
   system system_i (
-        .M00_araddr(M00_araddr),
-        .M00_arprot(M00_arprot),
-        .M00_arready(M00_arready),
-        .M00_arvalid(M00_arvalid),
-        .M00_awaddr(M00_awaddr),
-        .M00_awprot(M00_awprot),
-        .M00_awready(M00_awready),
-        .M00_awvalid(M00_awvalid),
-        .M00_bready(M00_bready),
-        .M00_bresp(M00_bresp),
-        .M00_bvalid(M00_bvalid),
-        .M00_rdata(M00_rdata),
-        .M00_rready(M00_rready),
-        .M00_rresp(M00_rresp),
-        .M00_rvalid(M00_rvalid),
-        .M00_wdata(M00_wdata),
-        .M00_wready(M00_wready),
-        .M00_wstrb(M00_wstrb),
-        .M00_wvalid(M00_wvalid),
-        .axi_aclk(axi_aclk),
-        .axi_aresetn(axi_aresetn)
+        //
+        .regfile_addr   (regfile_addr),
+        .regfile_clk    (regfile_clk),
+        .regfile_din    (regfile_din),
+        .regfile_dout   (regfile_dout),
+        .regfile_en     (regfile_en),
+        .regfile_rst    (regfile_rst),
+        .regfile_we     (regfile_we),
+        //
+        .axi_aclk       (axi_aclk),
+        .axi_aresetn    (axi_aresetn)
     );
     
     // This register file gives software contol over unit under test (UUT).
@@ -60,46 +40,37 @@ module top (
 
     assign slv_read[Nregs-1:3] = slv_reg[Nregs-1:3];
 
-    axi_regfile_v1_0_S00_AXI #  (
-        .C_S_AXI_DATA_WIDTH(32),
-        .C_S_AXI_ADDR_WIDTH(6) // 16 32 bit registers.
-    ) axi_regfile_inst (
-        // register interface
-        .slv_read(slv_read),
-        .slv_reg (slv_reg),
-        // axi interface
-        .S_AXI_ACLK    (axi_aclk),
-        .S_AXI_ARESETN (axi_aresetn),
+    mem_regfile #(
+       .Naddr(4)  // 16 registers
+    ) mem_regfile_inst (
+        .clk        (regfile_clk),
+        .addr       (regfile_addr[5:2]),
+        .wr_data    (regfile_din),
+        .rd_data    (regfile_dout),
+        .en         (regfile_en),
+        .reset      (regfile_rst),
+        .we         (regfile_we),
         //
-        .S_AXI_ARADDR  (M00_AXI_araddr ),
-        .S_AXI_ARPROT  (M00_AXI_arprot ),
-        .S_AXI_ARREADY (M00_AXI_arready),
-        .S_AXI_ARVALID (M00_AXI_arvalid),
-        .S_AXI_AWADDR  (M00_AXI_awaddr ),
-        .S_AXI_AWPROT  (M00_AXI_awprot ),
-        .S_AXI_AWREADY (M00_AXI_awready),
-        .S_AXI_AWVALID (M00_AXI_awvalid),
-        .S_AXI_BREADY  (M00_AXI_bready ),
-        .S_AXI_BRESP   (M00_AXI_bresp  ),
-        .S_AXI_BVALID  (M00_AXI_bvalid ),
-        .S_AXI_RDATA   (M00_AXI_rdata  ),
-        .S_AXI_RREADY  (M00_AXI_rready ),
-        .S_AXI_RRESP   (M00_AXI_rresp  ),
-        .S_AXI_RVALID  (M00_AXI_rvalid ),
-        .S_AXI_WDATA   (M00_AXI_wdata  ),
-        .S_AXI_WREADY  (M00_AXI_wready ),
-        .S_AXI_WSTRB   (M00_AXI_wstrb  ),
-        .S_AXI_WVALID  (M00_AXI_wvalid )
+        .reg_val    (slv_reg),
+        .pul_val    (),
+        .read_val   (slv_read)
     );
+
     
     logic[31:0] axi_count = -1;
     logic fan_pwm_pre = 0;
+    logic[7:0] pmod_led;
     always_ff @(posedge axi_aclk) begin
-        axi_count <= axi_count - 1;
-        //fan_pwm_pre <= ~((axi_count[12]) & (axi_count[11]) & (axi_count[10]) & (axi_count[9])); // 1/16 duty factor at 12KHz
+        axi_count <= axi_count + 1;
+
         if (axi_count[12:0] < 800) fan_pwm_pre <= 0; else fan_pwm_pre <= 1;
         fan_pwm <= fan_pwm_pre;
-    end    
+
+        pmod_led <= axi_count[31:24];
+    end
+
+    assign pmod[8:1] = pmod_led[7:0];
+        
     
     // debug
     top_ila ila_inst (.clk(axi_aclk), .probe0({axi_count[15:0], fan_pwm_pre})); // 17

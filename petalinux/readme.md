@@ -42,11 +42,10 @@ petalinux-build
 
 ### Package 
 petalinux-package boot --force --u-boot --kernel --fpga
-petalinux-package --force --boot --fsbl --pmufw --u-boot --fpga 
 
     * Use this to just update the bitfile.
 
-petalinux-package --force --boot --fsbl --pmufw --u-boot --fpga ../../implement/results/top.bit
+petalinux-package boot --force --u-boot --kernel --fpga ../../implement/results/top.bit
 
     * This for u-boot only
 
