@@ -135,6 +135,7 @@ xilinx.com:ip:axi_bram_ctrl:4.1\
 xilinx.com:ip:blk_mem_gen:8.4\
 xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:zynq_ultra_ps_e:3.5\
+xilinx.com:ip:system_ila:1.1\
 "
 
    set list_ips_missing ""
@@ -224,7 +225,10 @@ proc create_root_design { parentCell } {
 
   # Create instance: smartconnect_0, and set properties
   set smartconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 smartconnect_0 ]
-  set_property CONFIG.NUM_MI {3} $smartconnect_0
+  set_property -dict [list \
+    CONFIG.NUM_MI {3} \
+    CONFIG.NUM_SI {1} \
+  ] $smartconnect_0
 
 
   # Create instance: zynq_ultra_ps_e_0, and set properties
@@ -1010,7 +1014,6 @@ MIO#SD 1#SD 1#SD 1#SD 1#SD 1#SD 1#SD 1#USB 0#USB 0#USB 0#USB 0#USB 0#USB 0#USB 0
     CONFIG.PSU__LPD_SLCR__CSUPMU_WDT_CLK_SEL__SELECT {APB} \
     CONFIG.PSU__LPD_SLCR__CSUPMU__ACT_FREQMHZ {100.000000} \
     CONFIG.PSU__MAXIGP0__DATA_WIDTH {128} \
-    CONFIG.PSU__MAXIGP1__DATA_WIDTH {128} \
     CONFIG.PSU__M_AXI_GP0_SUPPORTS_NARROW_BURST {1} \
     CONFIG.PSU__M_AXI_GP1_SUPPORTS_NARROW_BURST {1} \
     CONFIG.PSU__M_AXI_GP2_SUPPORTS_NARROW_BURST {1} \
@@ -1216,7 +1219,7 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
     CONFIG.PSU__USE__IRQ0 {1} \
     CONFIG.PSU__USE__IRQ1 {0} \
     CONFIG.PSU__USE__M_AXI_GP0 {1} \
-    CONFIG.PSU__USE__M_AXI_GP1 {1} \
+    CONFIG.PSU__USE__M_AXI_GP1 {0} \
     CONFIG.PSU__USE__M_AXI_GP2 {0} \
     CONFIG.PSU__USE__PROC_EVENT_BUS {0} \
     CONFIG.PSU__USE__RPU_LEGACY_INTERRUPT {0} \
@@ -1275,6 +1278,9 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   set_property CONFIG.SINGLE_PORT_BRAM {1} $regfile_ctl
 
 
+  # Create instance: system_ila_0, and set properties
+  set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
+
   # Create interface connections
   connect_bd_intf_net -intf_net axi_bram_ctrl_0_BRAM_PORTA [get_bd_intf_pins axi_bram_ctrl_0/BRAM_PORTA] [get_bd_intf_pins blk_mem_gen_0/BRAM_PORTA]
   connect_bd_intf_net -intf_net axi_bram_ctrl_1_BRAM_PORTA [get_bd_intf_pins axi_bram_ctrl_1/BRAM_PORTA] [get_bd_intf_pins blk_mem_gen_1/BRAM_PORTA]
@@ -1283,7 +1289,7 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   connect_bd_intf_net -intf_net smartconnect_0_M01_AXI [get_bd_intf_pins axi_bram_ctrl_0/S_AXI] [get_bd_intf_pins smartconnect_0/M01_AXI]
   connect_bd_intf_net -intf_net smartconnect_0_M02_AXI [get_bd_intf_pins smartconnect_0/M02_AXI] [get_bd_intf_pins axi_bram_ctrl_1/S_AXI]
   connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM0_FPD [get_bd_intf_pins smartconnect_0/S00_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM0_FPD]
-  connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM1_FPD [get_bd_intf_pins smartconnect_0/S01_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM1_FPD]
+connect_bd_intf_net -intf_net [get_bd_intf_nets zynq_ultra_ps_e_0_M_AXI_HPM0_FPD] [get_bd_intf_pins smartconnect_0/S00_AXI] [get_bd_intf_pins system_ila_0/SLOT_0_AXI]
 
   # Create port connections
   connect_bd_net -net rst_ps8_0_99M_peripheral_aresetn  [get_bd_pins rst_ps8_0_99M/peripheral_aresetn] \
@@ -1291,7 +1297,8 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   [get_bd_pins axi_bram_ctrl_0/s_axi_aresetn] \
   [get_bd_pins axi_bram_ctrl_1/s_axi_aresetn] \
   [get_bd_pins smartconnect_0/aresetn] \
-  [get_bd_pins regfile_ctl/s_axi_aresetn]
+  [get_bd_pins regfile_ctl/s_axi_aresetn] \
+  [get_bd_pins system_ila_0/resetn]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0  [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] \
   [get_bd_ports axi_aclk] \
   [get_bd_pins axi_bram_ctrl_0/s_axi_aclk] \
@@ -1299,8 +1306,8 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   [get_bd_pins rst_ps8_0_99M/slowest_sync_clk] \
   [get_bd_pins smartconnect_0/aclk] \
   [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_fpd_aclk] \
-  [get_bd_pins zynq_ultra_ps_e_0/maxihpm1_fpd_aclk] \
-  [get_bd_pins regfile_ctl/s_axi_aclk]
+  [get_bd_pins regfile_ctl/s_axi_aclk] \
+  [get_bd_pins system_ila_0/clk]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0  [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0] \
   [get_bd_pins rst_ps8_0_99M/ext_reset_in]
 
