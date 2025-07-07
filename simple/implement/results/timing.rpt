@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2025.1 (lin64) Build 6140274 Wed May 21 22:58:25 MDT 2025
-| Date              : Sun Jul  6 23:06:21 2025
+| Date              : Mon Jul  7 15:04:11 2025
 | Host              : WD850X2TB running 64-bit Ubuntu 22.04.5 LTS
 | Command           : report_timing_summary -file ./results/timing.rpt
 | Design            : top
@@ -42,7 +42,11 @@ Timing Summary Report
 | ------------------
 ------------------------------------------------------------------------------------------------
 
-No report available as report_methodology has not been run prior. Run report_methodology on the current design for the summary of methodology violations.
+Rule       Severity  Description                    Violations  
+---------  --------  -----------------------------  ----------  
+TIMING-18  Warning   Missing input or output delay  9           
+
+Note: This report is based on the most recent report_methodology run and may not be up-to-date. Run report_methodology on the current design for the latest report.
 
 
 
@@ -55,7 +59,7 @@ Table of Contents
 3. checking pulse_width_clock (0)
 4. checking unconstrained_internal_endpoints (0)
 5. checking no_input_delay (0)
-6. checking no_output_delay (0)
+6. checking no_output_delay (9)
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
 9. checking loops (0)
@@ -92,9 +96,9 @@ Table of Contents
  There are 0 input ports with no input delay but user has a false path constraint.
 
 
-6. checking no_output_delay (0)
+6. checking no_output_delay (9)
 -------------------------------
- There are 0 ports with no output delay specified.
+ There are 9 ports with no output delay specified. (HIGH)
 
  There are 0 ports with no output delay but user has a false path constraint
 
@@ -139,7 +143,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-         NA           NA                     NA                   NA           NA           NA                     NA                   NA           NA           NA                      NA                    NA  
+      8.783        0.000                      0                   32        0.114        0.000                      0                   32        4.725        0.000                       0                    32  
 
 
 All user specified timing constraints are met.
@@ -163,6 +167,7 @@ clk_pl_1  {0.000 5.000}      10.000          100.000
 
 Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+clk_pl_0            8.783        0.000                      0                   32        0.114        0.000                      0                   32        4.725        0.000                       0                    32  
 
 
 ------------------------------------------------------------------------------------------------
@@ -187,5 +192,160 @@ Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing 
 | Timing Details
 | --------------
 ------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clk_pl_0
+  To Clock:  clk_pl_0
+
+Setup :            0  Failing Endpoints,  Worst Slack        8.783ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.114ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack        4.725ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             8.783ns  (required time - arrival time)
+  Source:                 <hidden>
+                            (rising edge-triggered cell FDRE clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            <hidden>
+                            (rising edge-triggered cell FDRE clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clk_pl_0
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clk_pl_0 rise@10.000ns - clk_pl_0 rise@0.000ns)
+  Data Path Delay:        1.099ns  (logic 0.628ns (57.127%)  route 0.471ns (42.873%))
+  Logic Levels:           3  (CARRY8=3)
+  Clock Path Skew:        -0.032ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.867ns = ( 11.867 - 10.000 ) 
+    Source Clock Delay      (SCD):    2.104ns
+    Clock Pessimism Removal (CPR):    0.205ns
+  Clock Uncertainty:      0.130ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.250ns
+    Phase Error              (PE):    0.000ns
+  Clock Net Delay (Source):      1.837ns (routing 0.768ns, distribution 1.069ns)
+  Clock Net Delay (Destination): 1.651ns (routing 0.702ns, distribution 0.949ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pl_0 rise edge)
+                                                      0.000     0.000 r  
+    PS8_X0Y0             PS8                          0.000     0.000 r  system_i/zynq_ultra_ps_e_0/inst/PS8_i/PLCLK[0]
+                         net (fo=1, routed)           0.229     0.229    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
+    BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
+                                                      0.038     0.267 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
+    X0Y2 (CLOCK_ROOT)    net (fo=32, routed)          1.837     2.104    <hidden>
+    SLICE_X11Y155        FDRE                                         r  <hidden>
+  -------------------------------------------------------------------    -------------------
+    SLICE_X11Y155        FDRE (Prop_AFF_SLICEL_C_Q)
+                                                      0.114     2.218 r  <hidden>
+                         net (fo=2, routed)           0.377     2.595    <hidden>
+    SLICE_X11Y155        CARRY8 (Prop_CARRY8_SLICEL_S[0]_CO[7])
+                                                      0.278     2.873 r  <hidden>
+                         net (fo=1, routed)           0.030     2.903    <hidden>
+    SLICE_X11Y156        CARRY8 (Prop_CARRY8_SLICEL_CI_CO[7])
+                                                      0.065     2.968 r  <hidden>
+                         net (fo=1, routed)           0.030     2.998    <hidden>
+    SLICE_X11Y157        CARRY8 (Prop_CARRY8_SLICEL_CI_O[7])
+                                                      0.171     3.169 r  <hidden>
+                         net (fo=1, routed)           0.034     3.203    <hidden>
+    SLICE_X11Y157        FDRE                                         r  <hidden>
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pl_0 rise edge)
+                                                     10.000    10.000 r  
+    PS8_X0Y0             PS8                          0.000    10.000 r  system_i/zynq_ultra_ps_e_0/inst/PS8_i/PLCLK[0]
+                         net (fo=1, routed)           0.181    10.181    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
+    BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
+                                                      0.035    10.216 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
+    X0Y2 (CLOCK_ROOT)    net (fo=32, routed)          1.651    11.867    <hidden>
+    SLICE_X11Y157        FDRE                                         r  <hidden>
+                         clock pessimism              0.205    12.072    
+                         clock uncertainty           -0.130    11.942    
+    SLICE_X11Y157        FDRE (Setup_HFF_SLICEL_C_D)
+                                                      0.044    11.986    <hidden>
+  -------------------------------------------------------------------
+                         required time                         11.986    
+                         arrival time                          -3.203    
+  -------------------------------------------------------------------
+                         slack                                  8.783    
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.114ns  (arrival time - required time)
+  Source:                 <hidden>
+                            (rising edge-triggered cell FDRE clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            <hidden>
+                            (rising edge-triggered cell FDRE clocked by clk_pl_0  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clk_pl_0
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk_pl_0 rise@0.000ns - clk_pl_0 rise@0.000ns)
+  Data Path Delay:        0.163ns  (logic 0.103ns (63.190%)  route 0.060ns (36.810%))
+  Logic Levels:           1  (CARRY8=1)
+  Clock Path Skew:        0.005ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    1.276ns
+    Source Clock Delay      (SCD):    1.147ns
+    Clock Pessimism Removal (CPR):    0.125ns
+  Clock Net Delay (Source):      0.996ns (routing 0.418ns, distribution 0.578ns)
+  Clock Net Delay (Destination): 1.089ns (routing 0.454ns, distribution 0.635ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pl_0 rise edge)
+                                                      0.000     0.000 r  
+    PS8_X0Y0             PS8                          0.000     0.000 r  system_i/zynq_ultra_ps_e_0/inst/PS8_i/PLCLK[0]
+                         net (fo=1, routed)           0.129     0.129    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
+    BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
+                                                      0.022     0.151 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
+    X0Y2 (CLOCK_ROOT)    net (fo=32, routed)          0.996     1.147    <hidden>
+    SLICE_X11Y156        FDRE                                         r  <hidden>
+  -------------------------------------------------------------------    -------------------
+    SLICE_X11Y156        FDRE (Prop_DFF_SLICEL_C_Q)
+                                                      0.084     1.231 r  <hidden>
+                         net (fo=1, routed)           0.052     1.283    <hidden>
+    SLICE_X11Y156        CARRY8 (Prop_CARRY8_SLICEL_S[3]_O[3])
+                                                      0.019     1.302 r  <hidden>
+                         net (fo=1, routed)           0.008     1.310    <hidden>
+    SLICE_X11Y156        FDRE                                         r  <hidden>
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pl_0 rise edge)
+                                                      0.000     0.000 r  
+    PS8_X0Y0             PS8                          0.000     0.000 r  system_i/zynq_ultra_ps_e_0/inst/PS8_i/PLCLK[0]
+                         net (fo=1, routed)           0.164     0.164    system_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0]
+    BUFG_PS_X0Y80        BUFG_PS (Prop_BUFG_PS_I_O)
+                                                      0.023     0.187 r  system_i/zynq_ultra_ps_e_0/inst/buffer_pl_clk_0.PL_CLK_0_BUFG/O
+    X0Y2 (CLOCK_ROOT)    net (fo=32, routed)          1.089     1.276    <hidden>
+    SLICE_X11Y156        FDRE                                         r  <hidden>
+                         clock pessimism             -0.125     1.152    
+    SLICE_X11Y156        FDRE (Hold_DFF_SLICEL_C_D)
+                                                      0.044     1.196    <hidden>
+  -------------------------------------------------------------------
+                         required time                         -1.196    
+                         arrival time                           1.310    
+  -------------------------------------------------------------------
+                         slack                                  0.114    
+
+
+
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         clk_pl_0
+Waveform(ns):       { 0.000 5.000 }
+Period(ns):         10.000
+Sources:            { system_i/zynq_ultra_ps_e_0/inst/PS8_i/PLCLK[0] }
+
+Check Type        Corner  Lib Pin  Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location       Pin
+Min Period        n/a     FDRE/C   n/a            0.550         10.000      9.450      SLICE_X11Y155  <hidden>
+Low Pulse Width   Slow    FDRE/C   n/a            0.275         5.000       4.725      SLICE_X11Y155  <hidden>
+High Pulse Width  Slow    FDRE/C   n/a            0.275         5.000       4.725      SLICE_X11Y155  <hidden>
+
 
 

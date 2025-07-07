@@ -132,6 +132,7 @@ set bCheckIPs 1
 if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
 xilinx.com:ip:zynq_ultra_ps_e:3.5\
+xilinx.com:ip:c_counter_binary:12.0\
 "
 
    set list_ips_missing ""
@@ -197,6 +198,8 @@ proc create_root_design { parentCell } {
   # Create interface ports
 
   # Create ports
+  set pl_clk [ create_bd_port -dir O -type clk pl_clk ]
+  set count [ create_bd_port -dir O -from 31 -to 0 -type data count ]
 
   # Create instance: zynq_ultra_ps_e_0, and set properties
   set zynq_ultra_ps_e_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:zynq_ultra_ps_e:3.5 zynq_ultra_ps_e_0 ]
@@ -661,7 +664,17 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   ] $zynq_ultra_ps_e_0
 
 
+  # Create instance: c_counter_binary_0, and set properties
+  set c_counter_binary_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:c_counter_binary:12.0 c_counter_binary_0 ]
+  set_property CONFIG.Output_Width {32} $c_counter_binary_0
+
+
   # Create port connections
+  connect_bd_net -net c_counter_binary_0_Q  [get_bd_pins c_counter_binary_0/Q] \
+  [get_bd_ports count]
+  connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0  [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] \
+  [get_bd_ports pl_clk] \
+  [get_bd_pins c_counter_binary_0/CLK]
 
   # Create address segments
 
