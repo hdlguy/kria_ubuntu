@@ -1,10 +1,10 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2025.1 (lin64) Build 6140274 Wed May 21 22:58:25 MDT 2025
-| Date              : Sun Jul  6 22:58:56 2025
+| Date              : Sun Jul  6 23:06:21 2025
 | Host              : WD850X2TB running 64-bit Ubuntu 22.04.5 LTS
 | Command           : report_timing_summary -file ./results/timing.rpt
-| Design            : system_wrapper
+| Design            : top
 | Device            : xck26-sfvc784
 | Speed File        : -2LVI  PRODUCTION 1.30 05-15-2022
 | Design State      : Routed
