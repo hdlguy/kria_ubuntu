@@ -131,8 +131,8 @@ set bCheckIPsPassed 1
 set bCheckIPs 1
 if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
-xilinx.com:ip:zynq_ultra_ps_e:3.5\
 xilinx.com:ip:c_counter_binary:12.0\
+xilinx.com:ip:zynq_ultra_ps_e:3.5\
 "
 
    set list_ips_missing ""
@@ -200,6 +200,11 @@ proc create_root_design { parentCell } {
   # Create ports
   set pl_clk [ create_bd_port -dir O -type clk pl_clk ]
   set count [ create_bd_port -dir O -from 31 -to 0 -type data count ]
+
+  # Create instance: c_counter_binary_0, and set properties
+  set c_counter_binary_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:c_counter_binary:12.0 c_counter_binary_0 ]
+  set_property CONFIG.Output_Width {32} $c_counter_binary_0
+
 
   # Create instance: zynq_ultra_ps_e_0, and set properties
   set zynq_ultra_ps_e_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:zynq_ultra_ps_e:3.5 zynq_ultra_ps_e_0 ]
@@ -282,6 +287,9 @@ proc create_root_design { parentCell } {
     CONFIG.PSU_MIO_44_DIRECTION {inout} \
     CONFIG.PSU_MIO_44_DRIVE_STRENGTH {4} \
     CONFIG.PSU_MIO_44_SLEW {slow} \
+    CONFIG.PSU_MIO_45_DIRECTION {in} \
+    CONFIG.PSU_MIO_45_DRIVE_STRENGTH {12} \
+    CONFIG.PSU_MIO_45_SLEW {fast} \
     CONFIG.PSU_MIO_46_DRIVE_STRENGTH {4} \
     CONFIG.PSU_MIO_46_SLEW {slow} \
     CONFIG.PSU_MIO_47_DRIVE_STRENGTH {4} \
@@ -346,9 +354,9 @@ proc create_root_design { parentCell } {
     CONFIG.PSU_MIO_9_DRIVE_STRENGTH {4} \
     CONFIG.PSU_MIO_9_SLEW {slow} \
     CONFIG.PSU_MIO_TREE_PERIPHERALS {Quad SPI Flash#Quad SPI Flash#Quad SPI Flash#Quad SPI Flash#Quad SPI Flash#Quad SPI Flash#SPI 1#GPIO0 MIO#GPIO0 MIO#SPI 1#SPI 1#SPI 1#GPIO0 MIO#SD 0#SD 0#SD 0#SD 0#SD\
-0#SD 0#SD 0#SD 0#SD 0#SD 0#SD 0#I2C 1#I2C 1#PMU GPI 0#DPAUX#DPAUX#DPAUX#DPAUX#PMU GPI 5####PMU GPO 3#UART 1#UART 1##SD 1#SD 1#SD 1#SD 1#SD 1##SD 1#SD 1#SD 1#SD 1#SD 1#SD 1#SD 1#USB 0#USB 0#USB 0#USB 0#USB\
-0#USB 0#USB 0#USB 0#USB 0#USB 0#USB 0#USB 0#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#MDIO 3#MDIO 3} \
-    CONFIG.PSU_MIO_TREE_SIGNALS {sclk_out#miso_mo1#mo2#mo3#mosi_mi0#n_ss_out#sclk_out#gpio0[7]#gpio0[8]#n_ss_out[0]#miso#mosi#gpio0[12]#sdio0_data_out[0]#sdio0_data_out[1]#sdio0_data_out[2]#sdio0_data_out[3]#sdio0_data_out[4]#sdio0_data_out[5]#sdio0_data_out[6]#sdio0_data_out[7]#sdio0_cmd_out#sdio0_clk_out#sdio0_bus_pow#scl_out#sda_out#gpi[0]#dp_aux_data_out#dp_hot_plug_detect#dp_aux_data_oe#dp_aux_data_in#gpi[5]####gpo[3]#txd#rxd##sdio1_data_out[4]#sdio1_data_out[5]#sdio1_data_out[6]#sdio1_data_out[7]#sdio1_bus_pow##sdio1_cd_n#sdio1_data_out[0]#sdio1_data_out[1]#sdio1_data_out[2]#sdio1_data_out[3]#sdio1_cmd_out#sdio1_clk_out#ulpi_clk_in#ulpi_dir#ulpi_tx_data[2]#ulpi_nxt#ulpi_tx_data[0]#ulpi_tx_data[1]#ulpi_stp#ulpi_tx_data[3]#ulpi_tx_data[4]#ulpi_tx_data[5]#ulpi_tx_data[6]#ulpi_tx_data[7]#rgmii_tx_clk#rgmii_txd[0]#rgmii_txd[1]#rgmii_txd[2]#rgmii_txd[3]#rgmii_tx_ctl#rgmii_rx_clk#rgmii_rxd[0]#rgmii_rxd[1]#rgmii_rxd[2]#rgmii_rxd[3]#rgmii_rx_ctl#gem3_mdc#gem3_mdio_out}\
+0#SD 0#SD 0#SD 0#SD 0#SD 0#SD 0#I2C 1#I2C 1#PMU GPI 0#DPAUX#DPAUX#DPAUX#DPAUX#PMU GPI 5####PMU GPO 3#UART 1#UART 1##SD 1#SD 1#SD 1#SD 1####SD 1#SD 1#SD 1#SD 1#SD 1#SD 1#USB 0#USB 0#USB 0#USB 0#USB 0#USB\
+0#USB 0#USB 0#USB 0#USB 0#USB 0#USB 0#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#Gem 3#MDIO 3#MDIO 3} \
+    CONFIG.PSU_MIO_TREE_SIGNALS {sclk_out#miso_mo1#mo2#mo3#mosi_mi0#n_ss_out#sclk_out#gpio0[7]#gpio0[8]#n_ss_out[0]#miso#mosi#gpio0[12]#sdio0_data_out[0]#sdio0_data_out[1]#sdio0_data_out[2]#sdio0_data_out[3]#sdio0_data_out[4]#sdio0_data_out[5]#sdio0_data_out[6]#sdio0_data_out[7]#sdio0_cmd_out#sdio0_clk_out#sdio0_bus_pow#scl_out#sda_out#gpi[0]#dp_aux_data_out#dp_hot_plug_detect#dp_aux_data_oe#dp_aux_data_in#gpi[5]####gpo[3]#txd#rxd##sdio1_data_out[4]#sdio1_data_out[5]#sdio1_data_out[6]#sdio1_data_out[7]####sdio1_data_out[0]#sdio1_data_out[1]#sdio1_data_out[2]#sdio1_data_out[3]#sdio1_cmd_out#sdio1_clk_out#ulpi_clk_in#ulpi_dir#ulpi_tx_data[2]#ulpi_nxt#ulpi_tx_data[0]#ulpi_tx_data[1]#ulpi_stp#ulpi_tx_data[3]#ulpi_tx_data[4]#ulpi_tx_data[5]#ulpi_tx_data[6]#ulpi_tx_data[7]#rgmii_tx_clk#rgmii_txd[0]#rgmii_txd[1]#rgmii_txd[2]#rgmii_txd[3]#rgmii_tx_ctl#rgmii_rx_clk#rgmii_rxd[0]#rgmii_rxd[1]#rgmii_rxd[2]#rgmii_rxd[3]#rgmii_rx_ctl#gem3_mdc#gem3_mdio_out}\
 \
     CONFIG.PSU_SD0_INTERNAL_BUS_WIDTH {8} \
     CONFIG.PSU_SD1_INTERNAL_BUS_WIDTH {8} \
@@ -610,10 +618,8 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
     CONFIG.PSU__SD1__CLK_50_SDR_ITAP_DLY {0x15} \
     CONFIG.PSU__SD1__CLK_50_SDR_OTAP_DLY {0x5} \
     CONFIG.PSU__SD1__DATA_TRANSFER_MODE {8Bit} \
-    CONFIG.PSU__SD1__GRP_CD__ENABLE {1} \
-    CONFIG.PSU__SD1__GRP_CD__IO {MIO 45} \
-    CONFIG.PSU__SD1__GRP_POW__ENABLE {1} \
-    CONFIG.PSU__SD1__GRP_POW__IO {MIO 43} \
+    CONFIG.PSU__SD1__GRP_CD__ENABLE {0} \
+    CONFIG.PSU__SD1__GRP_POW__ENABLE {0} \
     CONFIG.PSU__SD1__GRP_WP__ENABLE {0} \
     CONFIG.PSU__SD1__PERIPHERAL__ENABLE {1} \
     CONFIG.PSU__SD1__PERIPHERAL__IO {MIO 39 .. 51} \
@@ -662,11 +668,6 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
     CONFIG.PSU__USE__M_AXI_GP1 {0} \
     CONFIG.PSU__USE__M_AXI_GP2 {0} \
   ] $zynq_ultra_ps_e_0
-
-
-  # Create instance: c_counter_binary_0, and set properties
-  set c_counter_binary_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:c_counter_binary:12.0 c_counter_binary_0 ]
-  set_property CONFIG.Output_Width {32} $c_counter_binary_0
 
 
   # Create port connections
