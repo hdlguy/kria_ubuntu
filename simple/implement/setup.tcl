@@ -4,7 +4,9 @@ file delete -force proj.xpr *.os *.jou *.log proj.srcs proj.cache proj.runs
 #
 create_project -force  proj 
 set_property board_part xilinx.com:k26i:part0:1.4 [current_project]
-set_property board_connections {som240_1_connector xilinx.com:kv260_carrier:som240_1_connector:1.3} [get_projects proj]
+#set_property board_connections {som240_1_connector xilinx.com:kv260_carrier:som240_1_connector:1.3} [get_projects proj]
+#set_property board_part xilinx.com:kv260_som:part0:1.4 [current_project]
+
 
 set_property target_language Verilog [current_project]
 set_property default_lib work [current_project]
