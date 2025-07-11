@@ -128,6 +128,8 @@ The 16GB eMMC memory is enabled in the Vivado design.  These instructions make /
 /dev/mmcblk0p1  /mnt/emmc/  ext4  defaults  0  1
 
 ### Trick Kria u-boot to reboot from SD card
+This can be used to boot from the SD card on a KV260 board with the resistors still set to QSPI32 and the default Xilinx bootloader.
+
     setenv oldbootcmd 'setenv model $board_name; setexpr model gsub ".*${k24_starter}.*" starter; setexpr model gsub ".*${k26_starter}.*" starter; if test ${model} = "starter"; then run som_cc_boot; else run som_bootmenu; fi # Boot menu'
     setenv sdbootcmd 'mw.l 00ff5e0200 0000e100 1; mw.l 00ff5e0218 00000010 1'
     setenv bootcmd 'run sdbootcmd'
