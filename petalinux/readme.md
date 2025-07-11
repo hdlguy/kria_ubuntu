@@ -51,7 +51,7 @@ petalinux-package boot --force --u-boot --fpga
 petalinux-package boot --force --u-boot --fpga ../../implement/results/top.bit
 
 ### Copy to SD Card
-rm /media/pedro/BOOT/*; cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
+cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
 
 
 ## Installing a Debian root filesystem using debootstrap
