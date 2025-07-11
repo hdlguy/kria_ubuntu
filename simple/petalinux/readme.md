@@ -8,7 +8,7 @@ In order to boot directly from the SD card R162 and R163 were removed from the c
 Note that the reference designators on these resistors is not aligned wit the parts. R162 is to the right of R7. Then R163, R164 and R165 continue down the column. At the bottom of the column are R264 and C344.
 
 ### Download and uncompress sstate artifacts
-I find that the compile time download from petalinux.xilinx.com is just unreliable. The trick is to have those files local. Then, in petalinux-config we point to the local files.
+I find that the compile time download from petalinux.xilinx.com is unreliable. The trick is to have those files local. Then, in petalinux-config we point to the local files.
 
 https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html
     * Downloads (TAR/GZIP - 61.27 GB) 
@@ -24,9 +24,9 @@ cd proj1
 ### configure project from hardware
 petalinux-config --get-hw-description=../sdt/
 
-    * Image Packaging Configuration -> Root Filesystem Type -> EXT4                         (if you want a persistent rootfs)
-    * Image Packaging Configuration -> Device node of SD device -> mmcblk1p2                (if you have the eMMC device enabled in Vivado IPI)
-    * Subsystem Auto Hardware Settings -> SD/SDIO Settings -> Primary SD/SDIO -> sdhci1     (if you have the eMMC device enabled in Vivado IPI)
+    * Image Packaging Configuration -> Root Filesystem Type -> EXT4                         (because we want a persistent rootfs)
+    * Image Packaging Configuration -> Device node of SD device -> mmcblk1p2                (because we have the eMMC device enabled in Vivado IPI)
+    * Subsystem Auto Hardware Settings -> SD/SDIO Settings -> Primary SD/SDIO -> sdhci1     (because we have the eMMC device enabled in Vivado IPI)
     * DTG Settings -> Kernel Bootargs -> manual bootargs -> earlycon console=ttyPS0,115200 root=/dev/mmcblk1p2 rw rootwait clk_ignore_unused (mmc 1, rw, clk_ignore_unused)
 
     * Yocto Settings -> Local sstate feeds settings -> local sstate feeds url ->    file://~/Downloads/xilinx/petalinux/sstate_download_2025_1/aarch64/
@@ -50,16 +50,12 @@ petalinux-package boot --force --u-boot --fpga
 
 petalinux-package boot --force --u-boot --fpga ../../implement/results/top.bit
 
-    * This for u-boot only
-
-petalinux-package boot --force --fsbl --pmufw --u-boot --fpga
-
 ### Copy to SD Card
 rm /media/pedro/BOOT/*; cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
 
 
 ## Installing a Debian root filesystem using debootstrap
-Then follow instructions here to confgure the root file system: https://akhileshmoghe.github.io/_post/linux/debian_minimal_rootfs
+See: https://akhileshmoghe.github.io/_post/linux/debian_minimal_rootfs
 
 Here are the most important commands listed for convenience. 
 
@@ -108,6 +104,22 @@ sudo cp --recursive --preserve ./debianMinimalRootFS/* /media/pedro/rootfs/; syn
 
 
 ## Miscellaneous
+
+### eMMC drive
+The 16GB eMMC memory is enabled in the Vivado design.  These instructions make /dev/mmcblk0 showup under Linux.
+
+    sudo fdisk /dev/mmcblk0
+        - create new partition (n) accept defaults
+        - write partition table (w)
+    sudo mkfs.ext4 /dev/mmcblk0p1
+    sudo mkdir /mnt/emmc
+    sudo mount /dev/mmcblk0p1 /mnt/emmc
+
+    /dev/mmcblk0p1  7.2G   33M  6.7G   1% /mnt/emmc
+
+    sudo vi /etc/fstab
+
+/dev/mmcblk0p1  /mnt/emmc/  ext4  defaults  0  1
 
 ### Trick Kria u-boot to reboot from SD card
 setenv oldbootcmd 'setenv model $board_name; setexpr model gsub ".*${k24_starter}.*" starter; setexpr model gsub ".*${k26_starter}.*" starter; if test ${model} = "starter"; then run som_cc_boot; else run som_bootmenu; fi # Boot menu'
