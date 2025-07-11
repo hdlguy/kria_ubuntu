@@ -2,19 +2,18 @@
 # Petalinux (2025.1) on Kria K26i
 
 ## Building Petalinux
-
-### Set Boot Mode
-In order to boot directly from the SD card R162 and R163 were removed from the carrier card. This makes boot mode[3:0] = 1110 = SD1 LS (3.0).
-Note that the reference designators on these resistors is not aligned wit the parts. R162 is to the right of R7. Then R163, R164 and R165 continue down the column. At the bottom of the column are R264 and C344.
+These instructions assume the K26i boot mode lines are set to boot from the SD card. See instructions below.
 
 ### Download and uncompress sstate artifacts
 I find that the compile time download from petalinux.xilinx.com is unreliable. The trick is to have those files local. Then, in petalinux-config we point to the local files.
 
 https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html
-    * Downloads (TAR/GZIP - 61.27 GB) 
-    * sstate_aarch64 (TAR/GZIP - 33.95 GB) 
+    * Downloads         (TAR/GZIP - 61.27 GB) 
+    * sstate_aarch64    (TAR/GZIP - 33.95 GB) 
 
 ### Convert XSA to SDT
+The vivado compile script produces an XSA file with bitstream included. Petalinux 2024.2 and later require SDT files.
+
 rm -rf ./sdt/; /tools/Xilinx/2025.1/Vitis/bin/sdtgen -eval "set_dt_param -dir ./sdt -xsa ../implement/results/top.xsa -user_dts ./system-user.dtsi; generate_sdt;"
 
 ### Create Petalinux project
@@ -104,6 +103,10 @@ sudo cp --recursive --preserve ./debianMinimalRootFS/* /media/pedro/rootfs/; syn
 
 
 ## Miscellaneous
+
+### Set Boot Mode
+In order to boot directly from the SD card R162 and R163 were removed from the carrier card. This makes boot mode[3:0] = 1110 = SD1 LS (3.0).
+Note that the reference designators on these resistors is not aligned wit the parts. R162 is to the right of R7. Then R163, R164 and R165 continue down the column. At the bottom of the column are R264 and C344.
 
 ### eMMC drive
 The 16GB eMMC memory is enabled in the Vivado design.  These instructions make /dev/mmcblk0 showup under Linux.
