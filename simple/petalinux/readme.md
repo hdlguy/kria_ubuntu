@@ -96,8 +96,8 @@ Add these sources to /etc/apt/sources.list
 
     Add to /etc/network/interfaces
 
-    auto eth0
-    iface eth0 inet dhcp
+    auto end0
+    iface end0 inet dhcp
 
     Exit chroot.
 
