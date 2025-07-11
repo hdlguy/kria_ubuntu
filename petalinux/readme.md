@@ -137,3 +137,13 @@ This can be used to boot from the SD card on a KV260 board with the resistors st
     boot
 
 
+### Run-time FPGA Configuration
+
+Modify your FPGA build script to produce a .bin file in addition to the normal .bit file. The FPGA example in this project has that command in compile.tcl.
+    
+cp .../fpga/implement/results/top.bin to /lib/firmware
+
+sudo su
+
+echo top.bin > /sys/class/fpga_manager/fpga0/firmware
+
