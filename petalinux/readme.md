@@ -8,8 +8,9 @@ These instructions assume the K26i boot mode lines are set to boot from the SD c
 I find that the compile time download from petalinux.xilinx.com is unreliable. The trick is to have those files local. Then, in petalinux-config we point to the local files.
 
 https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html
-    * Downloads         (TAR/GZIP - 61.27 GB) 
-    * sstate_aarch64    (TAR/GZIP - 33.95 GB) 
+
+    - Downloads         (TAR/GZIP - 61.27 GB) 
+    - sstate_aarch64    (TAR/GZIP - 33.95 GB) 
 
 ### Convert XSA to SDT
 The vivado compile script produces an XSA file with bitstream included. Petalinux 2024.2 and later require SDT files.
