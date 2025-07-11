@@ -1,5 +1,5 @@
 
-#define     FPGA_BASE_ADDRESS       0x80000000
+#define     FPGA_BASE_ADDRESS       0xA0000000
 #define     FPGA_SIZE               0x00100000
 
 #define     FPGA_REG_OFFSET         0x00000000

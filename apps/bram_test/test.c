@@ -48,13 +48,13 @@ int main(int argc,char** argv)
     for (int i=0; i<TEST_RAM_SIZE/4; i++) bram_ptr[i] = write_data[i];
     // read bram
     for (int i=0; i<TEST_RAM_SIZE/4; i++) read_data[i] = bram_ptr[i];
-    // chech bram results
+    // check bram results
     errors = 0;
     for (int i=0; i<TEST_RAM_SIZE/4; i++) {
         if (read_data[i] != write_data[i]) {
             errors++;
         }
-        printf("%08d: %08x  %08x\n", i, read_data[i], write_data[i]);
+        //printf("%08d: %08x  %08x\n", i, read_data[i], write_data[i]);
     }
     fprintf(stdout, "scratch bram errors = %d\n", errors);
     free(write_data);
