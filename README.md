@@ -1,5 +1,6 @@
 # kria_ubuntu
 This is a project to demonstrate Xilinx Kria K26i running Ubuntu.
+![K26i on KV260](./kria_dev.jpg)
 
 ## Files
     - source - fpga source
