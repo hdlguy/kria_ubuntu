@@ -2,7 +2,7 @@
 # Petalinux (2025.1) on Kria K26i
 
 ## Building Petalinux
-These instructions assume the K26i boot mode lines are set to boot from the SD card. See instructions below for KV260 dev kit.
+These instructions assume the K26i boot mode is set to boot from the SD card. See instructions below for two ways to do this with the KV260 dev kit.
 
 ### Download and uncompress sstate artifacts
 I find that the compile time download from petalinux.xilinx.com is unreliable. The trick is to have those files local. Then, in petalinux-config we point to the local files.
@@ -72,12 +72,13 @@ Here are the most important commands listed for convenience.
 
 Add these sources to /etc/apt/sources.list
 
-    deb http://deb.debian.org/debian bookworm main contrib non-free
-    deb-src http://deb.debian.org/debian bookworm main contrib non-free
-    deb http://security.debian.org/ bookworm/updates main contrib non-free
-    deb-src http://security.debian.org/ bookworm/updates main contrib non-free
-    deb http://deb.debian.org/debian bookworm-updates main contrib non-free
-    deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free
+    #deb http://deb.debian.org/debian bookworm main contrib non-free
+    #deb-src http://deb.debian.org/debian bookworm main contrib non-free
+    #deb http://security.debian.org/ bookworm/updates main contrib non-free
+    #deb-src http://security.debian.org/ bookworm/updates main contrib non-free
+    #deb http://deb.debian.org/debian bookworm-updates main contrib non-free
+    #deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free
+    deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
 
     Do some more file system configuration.
 
@@ -111,6 +112,16 @@ Note that the reference designators on these resistors is not aligned wit the pa
 
 ![KV260 mode resistors](./mode_resistors.png)
 
+### Trick Kria u-boot to reboot from SD card
+This can be used to boot from the SD card on a KV260 board with the resistors still set to QSPI32 and the default Xilinx bootloader.
+
+    setenv oldbootcmd 'setenv model $board_name; setexpr model gsub ".*${k24_starter}.*" starter; setexpr model gsub ".*${k26_starter}.*" starter; if test ${model} = "starter"; then run som_cc_boot; else run som_bootmenu; fi # Boot menu'
+    setenv sdbootcmd 'mw.l 00ff5e0200 0000e100 1; mw.l 00ff5e0218 00000010 1'
+    setenv bootcmd 'run sdbootcmd'
+    saveenv
+    boot
+
+
 ### eMMC drive
 The 16GB eMMC memory is enabled in the Vivado design.  These instructions make /dev/mmcblk0 showup under Linux.
 
@@ -127,18 +138,8 @@ The 16GB eMMC memory is enabled in the Vivado design.  These instructions make /
 
 /dev/mmcblk0p1  /mnt/emmc/  ext4  defaults  0  1
 
-### Trick Kria u-boot to reboot from SD card
-This can be used to boot from the SD card on a KV260 board with the resistors still set to QSPI32 and the default Xilinx bootloader.
-
-    setenv oldbootcmd 'setenv model $board_name; setexpr model gsub ".*${k24_starter}.*" starter; setexpr model gsub ".*${k26_starter}.*" starter; if test ${model} = "starter"; then run som_cc_boot; else run som_bootmenu; fi # Boot menu'
-    setenv sdbootcmd 'mw.l 00ff5e0200 0000e100 1; mw.l 00ff5e0218 00000010 1'
-    setenv bootcmd 'run sdbootcmd'
-    saveenv
-    boot
-
 
 ### Run-time FPGA Configuration
-
 Modify your FPGA build script to produce a .bin file in addition to the normal .bit file. The FPGA example in this project has that command in compile.tcl.
     
 cp .../fpga/implement/results/top.bin to /lib/firmware
