@@ -113,7 +113,7 @@ Note that the reference designators on these resistors is not aligned wit the pa
 ![KV260 mode resistors](./mode_resistors.png)
 
 ### Trick Kria u-boot to reboot from SD card
-This can be used to boot from the SD card on a KV260 board with the resistors still set to QSPI32 and the default Xilinx bootloader.
+This can be used to boot from the SD card on a KV260 board with the resistors still set to QSPI32 and the default Kria KV260 bootloader. First the default bootcmd variable is saved as oldbootcmd. Then a new sdbootcmd variable is created that writes 0xE (SD1 3.0) to the alt-boot field of the boot control register and then asserts the alt-boot bit (See the TRM). Then bootcmd is set to run the sdbootcmd. The new environment settings are saved and a boot command is issued.  From now on u-boot will run but then force a reboot directly from the SD card on the KV260.
 
     setenv oldbootcmd 'setenv model $board_name; setexpr model gsub ".*${k24_starter}.*" starter; setexpr model gsub ".*${k26_starter}.*" starter; if test ${model} = "starter"; then run som_cc_boot; else run som_bootmenu; fi # Boot menu'
     setenv sdbootcmd 'mw.l 00ff5e0200 0000e100 1; mw.l 00ff5e0218 00000010 1'
