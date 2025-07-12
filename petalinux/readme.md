@@ -132,8 +132,6 @@ The 16GB eMMC memory is enabled in the Vivado design.  These instructions make /
     sudo mkdir /mnt/emmc
     sudo mount /dev/mmcblk0p1 /mnt/emmc
 
-    /dev/mmcblk0p1  7.2G   33M  6.7G   1% /mnt/emmc
-
     sudo vi /etc/fstab
 
 /dev/mmcblk0p1  /mnt/emmc/  ext4  defaults  0  1
