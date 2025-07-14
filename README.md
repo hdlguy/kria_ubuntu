@@ -1,5 +1,5 @@
 # kria_ubuntu
-This is a project to demonstrate Xilinx Kria K26i running Ubuntu.
+This is a project to demonstrate Xilinx Kria K26i running Ubuntu. The 2025.1 version of Vivado and Petalinux are used.
 ![K26i on KV260](./kria_dev.jpg)
 
 ## Files
