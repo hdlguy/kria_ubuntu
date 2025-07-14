@@ -50,6 +50,13 @@ petalinux-package boot --force --u-boot --fpga
 
 petalinux-package boot --force --u-boot --fpga ../../implement/results/top.bit
 
+### Prepare an SD card
+    * put an SD card in an adapter and plug into your workstation.
+sudo gparted
+    * select your SD card from the pull down in the upper right (WARNING: select the correct device because it will be erased.)
+    * Create a 500MB FAT32 partition named BOOT.
+    * Create a ext4 partition named rootfs. Use the rest of the card.
+
 ### Copy to SD Card
 cp images/linux/BOOT.BIN /media/pedro/BOOT/; cp images/linux/image.ub /media/pedro/BOOT/; cp images/linux/boot.scr /media/pedro/BOOT/; sync
 
