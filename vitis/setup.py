@@ -1,6 +1,5 @@
 # vitis -s setup.py hello1
-# vitis 
-#   then do file -> "set workspace" or file -> "open recent workspace"
+# vitis --workspace ./workspace/
 
 import vitis
 import os
@@ -8,10 +7,6 @@ import sys
 
 app_name = sys.argv[1]
 print("app_name = ", app_name)
-
-
-#app_name = "hello_world"
-#app_name = "bram_test"
 
 plat_name = "standalone_plat"
 hw_xsa = "../implement/results/top.xsa"
@@ -36,10 +31,11 @@ platform = client.create_platform_component(
     compiler = "gcc"
 )
 
-platform = client.get_component(name=plat_name)
+#platform = client.get_component(name=plat_name)
 
 status = platform.build()
 
+# create empty application
 comp = client.create_app_component(
     name=app_name,
     platform = "./workspace/standalone_plat/export/standalone_plat/standalone_plat.xpfm",
@@ -47,6 +43,7 @@ comp = client.create_app_component(
     template = "empty_application"
 )
 
+# add source files as symbolic links
 os.system(f"ln -s ../../../src/{app_name}/test.c workspace/{app_name}/src/test.c")
 os.system(f'ln -s ../../../src/fpga.h workspace/{app_name}/src/fpga.h')
 
