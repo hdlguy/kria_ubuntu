@@ -8,7 +8,6 @@ int main()
 
     xil_printf("Hello World\n\r");
     
-    // uint32_t *regptr = (uint32_t *)XPAR_M00_AXI_BASEADDR;
     uint32_t *regptr = (uint32_t *)XPAR_AXI_REGFILE_CTRL_BASEADDR;
     
 
