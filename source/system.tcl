@@ -135,6 +135,10 @@ xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:axi_bram_ctrl:4.1\
 xilinx.com:ip:proc_sys_reset:5.0\
 xilinx.com:ip:blk_mem_gen:8.4\
+xilinx.com:ip:v_tpg:8.2\
+xilinx.com:ip:xlconstant:1.1\
+xilinx.com:ip:axis_data_fifo:2.0\
+xilinx.com:ip:xlconcat:2.1\
 xilinx.com:ip:system_ila:1.1\
 "
 
@@ -635,7 +639,7 @@ Port;FD4A0000;FD4AFFFF;0|FPD;DPDMA;FD4C0000;FD4CFFFF;0|FPD;DDR_XMPU5_CFG;FD05000
   # Create instance: smartconnect_0, and set properties
   set smartconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 smartconnect_0 ]
   set_property -dict [list \
-    CONFIG.NUM_MI {2} \
+    CONFIG.NUM_MI {3} \
     CONFIG.NUM_SI {1} \
   ] $smartconnect_0
 
@@ -658,9 +662,28 @@ Port;FD4A0000;FD4AFFFF;0|FPD;DPDMA;FD4C0000;FD4CFFFF;0|FPD;DDR_XMPU5_CFG;FD05000
   set_property CONFIG.SINGLE_PORT_BRAM {1} $axi_bram_ctrl_0
 
 
+  # Create instance: v_tpg_0, and set properties
+  set v_tpg_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_tpg:8.2 v_tpg_0 ]
+
+  # Create instance: xlconstant_0, and set properties
+  set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0 ]
+  set_property CONFIG.CONST_VAL {0} $xlconstant_0
+
+
+  # Create instance: axis_data_fifo_0, and set properties
+  set axis_data_fifo_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_data_fifo:2.0 axis_data_fifo_0 ]
+
+  # Create instance: xlconcat_0, and set properties
+  set xlconcat_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_0 ]
+  set_property CONFIG.NUM_PORTS {1} $xlconcat_0
+
+
+  # Create instance: xlconstant_1, and set properties
+  set xlconstant_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_1 ]
+
   # Create instance: system_ila_0, and set properties
   set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
-  set_property CONFIG.C_DATA_DEPTH {2048} $system_ila_0
+  set_property CONFIG.C_SLOT_0_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} $system_ila_0
 
 
   # Create interface connections
@@ -668,7 +691,9 @@ Port;FD4A0000;FD4AFFFF;0|FPD;DPDMA;FD4C0000;FD4CFFFF;0|FPD;DDR_XMPU5_CFG;FD05000
   connect_bd_intf_net -intf_net axi_regfile_ctrl_BRAM_PORTA [get_bd_intf_ports regfile] [get_bd_intf_pins axi_regfile_ctrl/BRAM_PORTA]
   connect_bd_intf_net -intf_net smartconnect_0_M00_AXI [get_bd_intf_pins smartconnect_0/M00_AXI] [get_bd_intf_pins axi_regfile_ctrl/S_AXI]
   connect_bd_intf_net -intf_net smartconnect_0_M01_AXI [get_bd_intf_pins smartconnect_0/M01_AXI] [get_bd_intf_pins axi_bram_ctrl_0/S_AXI]
-connect_bd_intf_net -intf_net [get_bd_intf_nets smartconnect_0_M01_AXI] [get_bd_intf_pins smartconnect_0/M01_AXI] [get_bd_intf_pins system_ila_0/SLOT_0_AXI]
+  connect_bd_intf_net -intf_net smartconnect_0_M02_AXI [get_bd_intf_pins smartconnect_0/M02_AXI] [get_bd_intf_pins v_tpg_0/s_axi_CTRL]
+  connect_bd_intf_net -intf_net v_tpg_0_m_axis_video [get_bd_intf_pins axis_data_fifo_0/S_AXIS] [get_bd_intf_pins v_tpg_0/m_axis_video]
+connect_bd_intf_net -intf_net [get_bd_intf_nets v_tpg_0_m_axis_video] [get_bd_intf_pins axis_data_fifo_0/S_AXIS] [get_bd_intf_pins system_ila_0/SLOT_0_AXIS]
   connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM0_FPD [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM0_FPD] [get_bd_intf_pins smartconnect_0/S00_AXI]
 
   # Create port connections
@@ -677,21 +702,34 @@ connect_bd_intf_net -intf_net [get_bd_intf_nets smartconnect_0_M01_AXI] [get_bd_
   [get_bd_pins smartconnect_0/aresetn] \
   [get_bd_pins axi_bram_ctrl_0/s_axi_aresetn] \
   [get_bd_ports axi_aresetn] \
+  [get_bd_pins v_tpg_0/ap_rst_n] \
+  [get_bd_pins axis_data_fifo_0/s_axis_aresetn] \
   [get_bd_pins system_ila_0/resetn]
+  connect_bd_net -net v_tpg_0_interrupt  [get_bd_pins v_tpg_0/interrupt] \
+  [get_bd_pins xlconcat_0/In0]
+  connect_bd_net -net xlconcat_0_dout  [get_bd_pins xlconcat_0/dout] \
+  [get_bd_pins zynq_ultra_ps_e_0/pl_ps_irq0]
+  connect_bd_net -net xlconstant_0_dout  [get_bd_pins xlconstant_0/dout] \
+  [get_bd_pins v_tpg_0/fid_in]
+  connect_bd_net -net xlconstant_1_dout  [get_bd_pins xlconstant_1/dout] \
+  [get_bd_pins axis_data_fifo_0/m_axis_tready]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0  [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] \
   [get_bd_pins axi_regfile_ctrl/s_axi_aclk] \
   [get_bd_pins smartconnect_0/aclk] \
   [get_bd_pins rst_ps8_0_99M/slowest_sync_clk] \
   [get_bd_pins axi_bram_ctrl_0/s_axi_aclk] \
   [get_bd_ports axi_aclk] \
-  [get_bd_pins system_ila_0/clk] \
-  [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_fpd_aclk]
+  [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_fpd_aclk] \
+  [get_bd_pins v_tpg_0/ap_clk] \
+  [get_bd_pins axis_data_fifo_0/s_axis_aclk] \
+  [get_bd_pins system_ila_0/clk]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0  [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0] \
   [get_bd_pins rst_ps8_0_99M/ext_reset_in]
 
   # Create address segments
   assign_bd_address -offset 0xA0010000 -range 0x00008000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs axi_bram_ctrl_0/S_AXI/Mem0] -force
   assign_bd_address -offset 0xA0000000 -range 0x00002000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs axi_regfile_ctrl/S_AXI/Mem0] -force
+  assign_bd_address -offset 0xA0020000 -range 0x00010000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs v_tpg_0/s_axi_CTRL/Reg] -force
 
 
   # Restore current instance
