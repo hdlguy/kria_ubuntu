@@ -18,6 +18,14 @@ os.system('rm -rf workspace')
 client = vitis.create_client()
 client.set_workspace(path="workspace")
 
+comp = client.create_hls_component(name = "hls_tpg", cfg_file = ["hls_config.cfg"], template = "empty_hls_component")
+comp = client.get_component(name="hls_tpg")
+
+# add source files as symbolic links
+os.system(f"ln -s ../../../src/{app_name}/{app_name).cpp        workspace/{app_name}/{app_name}.cpp")
+os.system(f"ln -s ../../../src/{app_name}/tb_{app_name).cpp     workspace/{app_name}/tb_{app_name}.cpp")
+os.system(f"ln -s ../../../src/{app_name}/hls_config.cfg        workspace/{app_name}/hls_config.cfg")
+
 vitis.dispose()
 
 
