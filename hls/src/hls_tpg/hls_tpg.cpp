@@ -22,12 +22,12 @@ void hls_tpg (ap_uint<32> wval[16], ap_uint<32> rval[16], hls::stream<line_pkt> 
     for (int i=0; i<L; i++) {
         t_out.data = i;
         t_out.keep = -1; //Enabling all bytes
-        if (i==L-1) {
+        if (i==(L-1)) {
             t_out.last = 1;
         } else {
             t_out.last = 0;
         }
+        dout.write(t_out);
     }
-    dout.write(t_out);
 
 }

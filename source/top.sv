@@ -34,7 +34,7 @@ module top (
     logic[31:0] count=0;
     always_ff @(posedge axi_aclk) begin
         count <= count + 1;
-        if (count[12:0] < 800) fan_pwm <= 0; else fan_pwm <= 1;
+        if (count[12:0] < 700) fan_pwm <= 0; else fan_pwm <= 1;
     end
         
     assign pmod = count[31:24];
