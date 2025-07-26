@@ -12,7 +12,7 @@ int main()
     uint32_t *regptr = (uint32_t *)XPAR_AXI_REGFILE_CTRL_BASEADDR;    
     xil_printf("regptr = %p\n\r", regptr);
     //uint32_t *tpgptr = (uint32_t *)XPAR_V_TPG_0_BASEADDR;
-    uint32_t *tpgptr = (uint32_t *)XPAR_HLS_TPG_0_BASEADDR;
+    uint32_t *tpgptr = (uint32_t *)XPAR_HLS_TPG_0_BASEADDR; 
     xil_printf("tpgptr = %p\n\r", tpgptr);
 
     // tpgptr[XV_TPG_CTRL_ADDR_AP_CTRL/4] = 0x00;

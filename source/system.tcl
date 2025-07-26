@@ -136,11 +136,10 @@ xilinx.com:ip:axi_bram_ctrl:4.1\
 xilinx.com:ip:proc_sys_reset:5.0\
 xilinx.com:ip:blk_mem_gen:8.4\
 xilinx.com:ip:v_tpg:8.2\
-xilinx.com:ip:axis_data_fifo:2.0\
 xilinx.com:ip:system_ila:1.1\
-xilinx.com:hls:hls_tpg:1.0\
 xilinx.com:inline_hdl:ilconstant:1.0\
 xilinx.com:inline_hdl:ilconcat:1.0\
+xilinx.com:hls:hls_tpg:1.0\
 "
 
    set list_ips_missing ""
@@ -666,20 +665,9 @@ Port;FD4A0000;FD4AFFFF;0|FPD;DPDMA;FD4C0000;FD4CFFFF;0|FPD;DDR_XMPU5_CFG;FD05000
   # Create instance: v_tpg_0, and set properties
   set v_tpg_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_tpg:8.2 v_tpg_0 ]
 
-  # Create instance: axis_data_fifo_0, and set properties
-  set axis_data_fifo_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_data_fifo:2.0 axis_data_fifo_0 ]
-
   # Create instance: system_ila_0, and set properties
   set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
   set_property CONFIG.C_SLOT_0_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} $system_ila_0
-
-
-  # Create instance: hls_tpg_0, and set properties
-  set hls_tpg_0 [ create_bd_cell -type ip -vlnv xilinx.com:hls:hls_tpg:1.0 hls_tpg_0 ]
-
-  # Create instance: tpg_ila, and set properties
-  set tpg_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 tpg_ila ]
-  set_property CONFIG.C_SLOT_0_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} $tpg_ila
 
 
   # Create instance: ilconstant_0, and set properties
@@ -696,6 +684,14 @@ Port;FD4A0000;FD4AFFFF;0|FPD;DPDMA;FD4C0000;FD4CFFFF;0|FPD;DDR_XMPU5_CFG;FD05000
   # Create instance: ilconcat_0, and set properties
   set ilconcat_0 [ create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconcat:1.0 ilconcat_0 ]
 
+  # Create instance: hls_tpg_0, and set properties
+  set hls_tpg_0 [ create_bd_cell -type ip -vlnv xilinx.com:hls:hls_tpg:1.0 hls_tpg_0 ]
+
+  # Create instance: tpg_ila, and set properties
+  set tpg_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 tpg_ila ]
+  set_property CONFIG.C_SLOT_0_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} $tpg_ila
+
+
   # Create interface connections
   connect_bd_intf_net -intf_net axi_bram_ctrl_0_BRAM_PORTA [get_bd_intf_pins axi_bram_ctrl_0/BRAM_PORTA] [get_bd_intf_pins blk_mem_gen_0/BRAM_PORTA]
   connect_bd_intf_net -intf_net axi_regfile_ctrl_BRAM_PORTA [get_bd_intf_ports regfile] [get_bd_intf_pins axi_regfile_ctrl/BRAM_PORTA]
@@ -704,19 +700,16 @@ connect_bd_intf_net -intf_net hls_tpg_0_dout [get_bd_intf_pins hls_tpg_0/dout] [
   connect_bd_intf_net -intf_net smartconnect_0_M01_AXI [get_bd_intf_pins smartconnect_0/M01_AXI] [get_bd_intf_pins axi_bram_ctrl_0/S_AXI]
   connect_bd_intf_net -intf_net smartconnect_0_M02_AXI [get_bd_intf_pins smartconnect_0/M02_AXI] [get_bd_intf_pins v_tpg_0/s_axi_CTRL]
   connect_bd_intf_net -intf_net smartconnect_0_M03_AXI [get_bd_intf_pins smartconnect_0/M03_AXI] [get_bd_intf_pins hls_tpg_0/s_axi_control]
-  connect_bd_intf_net -intf_net v_tpg_0_m_axis_video [get_bd_intf_pins axis_data_fifo_0/S_AXIS] [get_bd_intf_pins v_tpg_0/m_axis_video]
-connect_bd_intf_net -intf_net [get_bd_intf_nets v_tpg_0_m_axis_video] [get_bd_intf_pins axis_data_fifo_0/S_AXIS] [get_bd_intf_pins system_ila_0/SLOT_0_AXIS]
+connect_bd_intf_net -intf_net v_tpg_0_m_axis_video [get_bd_intf_pins v_tpg_0/m_axis_video] [get_bd_intf_pins system_ila_0/SLOT_0_AXIS]
   connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM0_FPD [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM0_FPD] [get_bd_intf_pins smartconnect_0/S00_AXI]
 
   # Create port connections
-  connect_bd_net -net hls_tpg_0_interrupt  [get_bd_pins hls_tpg_0/interrupt] \
-  [get_bd_pins ilconcat_0/In1]
   connect_bd_net -net ilconcat_0_dout  [get_bd_pins ilconcat_0/dout] \
   [get_bd_pins zynq_ultra_ps_e_0/pl_ps_irq0]
   connect_bd_net -net ilconstant_0_dout  [get_bd_pins ilconstant_0/dout] \
   [get_bd_pins hls_tpg_0/dout_TREADY]
   connect_bd_net -net ilconstant_1_dout  [get_bd_pins ilconstant_1/dout] \
-  [get_bd_pins axis_data_fifo_0/m_axis_tready]
+  [get_bd_pins v_tpg_0/m_axis_video_TREADY]
   connect_bd_net -net ilconstant_2_dout  [get_bd_pins ilconstant_2/dout] \
   [get_bd_pins v_tpg_0/fid_in]
   connect_bd_net -net rst_ps8_0_99M_peripheral_aresetn  [get_bd_pins rst_ps8_0_99M/peripheral_aresetn] \
@@ -725,10 +718,9 @@ connect_bd_intf_net -intf_net [get_bd_intf_nets v_tpg_0_m_axis_video] [get_bd_in
   [get_bd_pins axi_bram_ctrl_0/s_axi_aresetn] \
   [get_bd_ports axi_aresetn] \
   [get_bd_pins v_tpg_0/ap_rst_n] \
-  [get_bd_pins axis_data_fifo_0/s_axis_aresetn] \
   [get_bd_pins system_ila_0/resetn] \
-  [get_bd_pins tpg_ila/resetn] \
-  [get_bd_pins hls_tpg_0/ap_rst_n]
+  [get_bd_pins hls_tpg_0/ap_rst_n] \
+  [get_bd_pins tpg_ila/resetn]
   connect_bd_net -net v_tpg_0_interrupt  [get_bd_pins v_tpg_0/interrupt] \
   [get_bd_pins ilconcat_0/In0]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0  [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] \
@@ -739,10 +731,9 @@ connect_bd_intf_net -intf_net [get_bd_intf_nets v_tpg_0_m_axis_video] [get_bd_in
   [get_bd_ports axi_aclk] \
   [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_fpd_aclk] \
   [get_bd_pins v_tpg_0/ap_clk] \
-  [get_bd_pins axis_data_fifo_0/s_axis_aclk] \
   [get_bd_pins system_ila_0/clk] \
-  [get_bd_pins tpg_ila/clk] \
-  [get_bd_pins hls_tpg_0/ap_clk]
+  [get_bd_pins hls_tpg_0/ap_clk] \
+  [get_bd_pins tpg_ila/clk]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0  [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0] \
   [get_bd_pins rst_ps8_0_99M/ext_reset_in]
 
