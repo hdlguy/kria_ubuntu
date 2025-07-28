@@ -4,6 +4,8 @@
 #include "xhls_tpg_hw.h"
 #include "fpga.h"
 
+#define H 10
+#define W 20
 
 int main()
 {
@@ -33,8 +35,12 @@ int main()
     // tpgptr[XV_TPG_CTRL_ADDR_ZPLATEHORCONTDELTA_DATA/4] = 0;
     // tpgptr[XV_TPG_CTRL_ADDR_AP_CTRL/4] = 0x81;
 
-    tpgptr[XHLS_TPG_CONTROL_ADDR_HEIGHT_DATA/4] = 5;
-    tpgptr[XHLS_TPG_CONTROL_ADDR_WIDTH_DATA/4] = 10;
+    tpgptr[XHLS_TPG_CONTROL_ADDR_HEIGHT_DATA/4] = H;
+    tpgptr[XHLS_TPG_CONTROL_ADDR_WIDTH_DATA/4]  = W;
+
+    tpgptr[XHLS_TPG_CONTROL_ADDR_XHAIR_ROW_DATA/4] = H/2;
+    tpgptr[XHLS_TPG_CONTROL_ADDR_XHAIR_COL_DATA/4] = W/2;
+
     tpgptr[XHLS_TPG_CONTROL_ADDR_AP_CTRL/4] = 0x81;
 
     for (int i=0; i<8; i++) xil_printf("reg[%02d] = 0x%08x\n\r", i, tpgptr[i]);

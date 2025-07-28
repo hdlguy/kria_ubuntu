@@ -21,12 +21,12 @@ int main()
     tpgptr[XV_TPG_CTRL_ADDR_HEIGHT_DATA/4] = 128;
     tpgptr[XV_TPG_CTRL_ADDR_WIDTH_DATA/4] = 70;
     tpgptr[XV_TPG_CTRL_ADDR_BCKGNDID_DATA/4] = 0x0E;
-    tpgptr[XV_TPG_CTRL_ADDR_OVRLAYID_DATA/4] = 0;
+    tpgptr[XV_TPG_CTRL_ADDR_OVRLAYID_DATA/4] = 2;
     tpgptr[XV_TPG_CTRL_ADDR_MASKID_DATA/4] = 0;
     tpgptr[XV_TPG_CTRL_ADDR_MOTIONSPEED_DATA/4] = 3;
     tpgptr[XV_TPG_CTRL_ADDR_COLORFORMAT_DATA/4] = 0;
-    tpgptr[XV_TPG_CTRL_ADDR_CROSSHAIRX_DATA/4] = 0;
-    tpgptr[XV_TPG_CTRL_ADDR_CROSSHAIRY_DATA/4] = 0;
+    tpgptr[XV_TPG_CTRL_ADDR_CROSSHAIRX_DATA/4] = 35;
+    tpgptr[XV_TPG_CTRL_ADDR_CROSSHAIRY_DATA/4] = 5;
     tpgptr[XV_TPG_CTRL_ADDR_ZPLATEHORCONTSTART_DATA/4] = 0;
     tpgptr[XV_TPG_CTRL_ADDR_ZPLATEHORCONTDELTA_DATA/4] = 0;
 
@@ -41,7 +41,7 @@ int main()
 
         xil_printf("%08d: FPGA_ID = 0x%08x, FPGA_VERSION = 0x%08x\n\r", whilecount, regptr[FPGA_ID], regptr[FPGA_VERSION]);
 
-        for(int i=0; i<100000000; i++);
+        for(int i=0; i<200000000; i++);
         whilecount++;
 
     }

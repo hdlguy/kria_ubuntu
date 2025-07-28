@@ -35,7 +35,7 @@ void hls_tpg (
 
             // data generation
             if ((i==xhair_col) || (j==xhair_row)) {
-                t_out.data = 0;
+                t_out.data = 0xffffff;
             } else {
                 t_out.data = i;
             }
