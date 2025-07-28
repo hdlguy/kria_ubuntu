@@ -1,3 +1,4 @@
+// hls_tpg.cpp - Video Test Pattern Generator
 #include "ap_int.h"
 #include <ap_fixed.h>
 #include <stdint.h>
