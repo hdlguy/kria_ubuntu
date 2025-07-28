@@ -1,6 +1,7 @@
 #include "xil_printf.h"
 #include "xparameters.h"
-#include "xv_tpg_hw.h"
+//#include "xv_tpg_hw.h"
+#include "xhls_tpg_hw.h"
 #include "fpga.h"
 
 
@@ -30,12 +31,13 @@ int main()
     // tpgptr[XV_TPG_CTRL_ADDR_CROSSHAIRY_DATA/4] = 0;
     // tpgptr[XV_TPG_CTRL_ADDR_ZPLATEHORCONTSTART_DATA/4] = 0;
     // tpgptr[XV_TPG_CTRL_ADDR_ZPLATEHORCONTDELTA_DATA/4] = 0;
-
     // tpgptr[XV_TPG_CTRL_ADDR_AP_CTRL/4] = 0x81;
-    tpgptr[XV_TPG_CTRL_ADDR_AP_CTRL/4] = 0x81;
 
+    tpgptr[XHLS_TPG_CONTROL_ADDR_HEIGHT_DATA/4] = 5;
+    tpgptr[XHLS_TPG_CONTROL_ADDR_WIDTH_DATA/4] = 10;
+    tpgptr[XHLS_TPG_CONTROL_ADDR_AP_CTRL/4] = 0x81;
 
-    for (int i=0; i<16; i++) xil_printf("reg[%02d] = 0x%08x\n\r", i, tpgptr[i]);
+    for (int i=0; i<8; i++) xil_printf("reg[%02d] = 0x%08x\n\r", i, tpgptr[i]);
 
     
     uint32_t whilecount=0;
@@ -43,7 +45,7 @@ int main()
 
         xil_printf("%08d: FPGA_ID = 0x%08x, FPGA_VERSION = 0x%08x\n\r", whilecount, regptr[FPGA_ID], regptr[FPGA_VERSION]);
 
-        for(int i=0; i<100000000; i++);
+        for(int i=0; i<200000000; i++);
         whilecount++;
 
     }

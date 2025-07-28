@@ -719,8 +719,8 @@ connect_bd_intf_net -intf_net v_tpg_0_m_axis_video [get_bd_intf_pins v_tpg_0/m_a
   [get_bd_ports axi_aresetn] \
   [get_bd_pins v_tpg_0/ap_rst_n] \
   [get_bd_pins system_ila_0/resetn] \
-  [get_bd_pins hls_tpg_0/ap_rst_n] \
-  [get_bd_pins tpg_ila/resetn]
+  [get_bd_pins tpg_ila/resetn] \
+  [get_bd_pins hls_tpg_0/ap_rst_n]
   connect_bd_net -net v_tpg_0_interrupt  [get_bd_pins v_tpg_0/interrupt] \
   [get_bd_pins ilconcat_0/In0]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0  [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] \
@@ -732,8 +732,8 @@ connect_bd_intf_net -intf_net v_tpg_0_m_axis_video [get_bd_intf_pins v_tpg_0/m_a
   [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_fpd_aclk] \
   [get_bd_pins v_tpg_0/ap_clk] \
   [get_bd_pins system_ila_0/clk] \
-  [get_bd_pins hls_tpg_0/ap_clk] \
-  [get_bd_pins tpg_ila/clk]
+  [get_bd_pins tpg_ila/clk] \
+  [get_bd_pins hls_tpg_0/ap_clk]
   connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0  [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0] \
   [get_bd_pins rst_ps8_0_99M/ext_reset_in]
 
