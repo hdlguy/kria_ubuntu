@@ -28,17 +28,21 @@ void hls_tpg (
 
     line_pkt t_out;
 
-    for (int j=0; j<height; j++) {
-        for (int i=0; i<width; i++) {
+    static uint32_t fcount;
+    for (uint32_t j=0; j<height; j++) { // loop over the lines
+        for (uint32_t i=0; i<width; i++) { // loop over the pixels
 
             //Enable all bytes
             t_out.keep = -1; 
 
-            // data generation
+            // calculate the pixel value
             if ((i==xhair_col) || (j==xhair_row)) {
                 t_out.data = 0xffffff;
             } else {
-                t_out.data = i;
+                t_out.data = 0x000000;
+                t_out.data |= (0xff&fcount) << 16;
+                t_out.data |= (0xff&j) << 8;
+                t_out.data |= (0xff&i) << 0;
             }
 
             // indicate start of frame
@@ -58,5 +62,6 @@ void hls_tpg (
             dout.write(t_out);
         }
     }
+    fcount++;
 
 }
