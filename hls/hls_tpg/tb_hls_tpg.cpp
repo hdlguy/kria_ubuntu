@@ -16,16 +16,16 @@ void hls_tpg (
     ap_uint<12> xhair_row,  // crosshair position
     ap_uint<12> xhair_col,  // crosshair position
     // streaming output
-    hls::stream<line_pkt> &dout
+    hls::stream<line_pkt> &dout // output (pass by reference)
 );
 
 int main()
 {
 
-    ap_uint<12> height = 10;     // number of lines per video frame
-    ap_uint<12> width  = 20;      // number of pixels per line of video
-    ap_uint<12> xhair_row = height/2;  // crosshair position
-    ap_uint<12> xhair_col = width/2;  // crosshair position
+    ap_uint<12> height = 10;
+    ap_uint<12> width  = 20;
+    ap_uint<12> xhair_row = height/2;
+    ap_uint<12> xhair_col = width/2;
     hls::stream<line_pkt> dout;
 
     hls_tpg(height, width, xhair_row, xhair_col, dout);
