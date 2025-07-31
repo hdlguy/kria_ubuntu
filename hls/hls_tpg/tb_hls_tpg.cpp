@@ -1,24 +1,38 @@
 #include "ap_int.h"
 #include <ap_fixed.h>
 #include <stdio.h>
+#include "ap_axi_sdata.h"
+#include "hls_stream.h"
 
-ap_uint<8> hls_tpg ();
+#define DWIDTH 24
+
+typedef ap_axiu<DWIDTH, 1, 1, 1> line_pkt;
+
+
+void hls_tpg (
+    // axilite memory mapped registers
+    ap_uint<12> height,     // number of lines per video frame
+    ap_uint<12> width,      // number of pixels per line of video
+    ap_uint<12> xhair_row,  // crosshair position
+    ap_uint<12> xhair_col,  // crosshair position
+    // streaming output
+    hls::stream<line_pkt> &dout
+);
 
 int main()
 {
-    ap_uint<8> tval=1;
 
-    int N = 1000;
+    ap_uint<12> height = 10;     // number of lines per video frame
+    ap_uint<12> width  = 20;      // number of pixels per line of video
+    ap_uint<12> xhair_row = height/2;  // crosshair position
+    ap_uint<12> xhair_col = width/2;  // crosshair position
+    hls::stream<line_pkt> dout;
 
-    int errors=0;
-    ap_uint<8> rval;
-    for (int i=0; i<N; i++) {
-        rval = hls_tpg();
-        if (tval != rval) errors++;
-        tval++;
-    }
-    printf("\n*** N=%d, errors = %d\n\n", N, errors);
+    hls_tpg(height, width, xhair_row, xhair_col, dout);
 
+    //std::cout << dout << "\n";
+
+    int errors = 0;
     return(errors);
 
 }
